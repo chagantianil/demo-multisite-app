@@ -23,6 +23,7 @@ import {fonts, fontWeights, fontSizes, lineHeights} from './foundations/fonts'
 // Custom Component Styles
 // ============================================
 import Button from './components/button'
+import Popover from './components/popover'
 
 /**
  * Custom Theme Configuration
@@ -59,7 +60,8 @@ export const overrides = {
     // Component styles
     components: {
         ...baseOverrides.components,
-        Button
+        Button,
+        Popover
     }
 }
 

@@ -1776,5 +1776,41 @@
   },
   "with_registration.info.please_sign_in": {
     "defaultMessage": "先に進むにはサインインしてください!"
+  },
+  "newsletter.label.first_name": {
+    "defaultMessage": "名"
+  },
+  "newsletter.label.last_name_optional": {
+    "defaultMessage": "姓（任意）"
+  },
+  "newsletter.label.email": {
+    "defaultMessage": "メールアドレス"
+  },
+  "newsletter.label.phone_optional": {
+    "defaultMessage": "電話番号（任意）"
+  },
+  "newsletter.label.consent": {
+    "defaultMessage": "利用規約に同意します。"
+  },
+  "newsletter.button.subscribe": {
+    "defaultMessage": "登録する"
+  },
+  "newsletter.placeholder.email": {
+    "defaultMessage": "example@email.com"
+  },
+  "newsletter.error.email_required": {
+    "defaultMessage": "メールアドレスは必須です。"
+  },
+  "newsletter.error.email_invalid": {
+    "defaultMessage": "有効なメールアドレスを入力してください。"
+  },
+  "newsletter.error.first_name_required": {
+    "defaultMessage": "名は必須です。"
+  },
+  "newsletter.error.consent_required": {
+    "defaultMessage": "登録するには同意が必要です。"
+  },
+  "newsletter.success.subscribed": {
+    "defaultMessage": "登録が完了しました！"
   }
 }

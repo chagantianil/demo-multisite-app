@@ -2693,6 +2693,78 @@
       "value": "Switch to one address?"
     }
   ],
+  "newsletter.button.subscribe": [
+    {
+      "type": 0,
+      "value": "Subscribe"
+    }
+  ],
+  "newsletter.error.consent_required": [
+    {
+      "type": 0,
+      "value": "You must consent to subscribe."
+    }
+  ],
+  "newsletter.error.email_invalid": [
+    {
+      "type": 0,
+      "value": "Please enter a valid email."
+    }
+  ],
+  "newsletter.error.email_required": [
+    {
+      "type": 0,
+      "value": "Email is required."
+    }
+  ],
+  "newsletter.error.first_name_required": [
+    {
+      "type": 0,
+      "value": "First name is required."
+    }
+  ],
+  "newsletter.label.consent": [
+    {
+      "type": 0,
+      "value": "I agree to the terms and conditions."
+    }
+  ],
+  "newsletter.label.email": [
+    {
+      "type": 0,
+      "value": "Email"
+    }
+  ],
+  "newsletter.label.first_name": [
+    {
+      "type": 0,
+      "value": "First Name"
+    }
+  ],
+  "newsletter.label.last_name_optional": [
+    {
+      "type": 0,
+      "value": "Last Name (Optional)"
+    }
+  ],
+  "newsletter.label.phone_optional": [
+    {
+      "type": 0,
+      "value": "Phone (Optional)"
+    }
+  ],
+  "newsletter.placeholder.email": [
+    {
+      "type": 0,
+      "value": "you@email.com"
+    }
+  ],
+  "newsletter.success.subscribed": [
+    {
+      "type": 0,
+      "value": "Successfully subscribed!"
+    }
+  ],
   "offline_banner.description.browsing_offline_mode": [
     {
       "type": 0,

@@ -1119,6 +1119,42 @@
   "multi_ship_warning_modal.title.switch_to_one_address": {
     "defaultMessage": "Switch to one address?"
   },
+  "newsletter.button.subscribe": {
+    "defaultMessage": "Subscribe"
+  },
+  "newsletter.error.consent_required": {
+    "defaultMessage": "You must consent to subscribe."
+  },
+  "newsletter.error.email_invalid": {
+    "defaultMessage": "Please enter a valid email."
+  },
+  "newsletter.error.email_required": {
+    "defaultMessage": "Email is required."
+  },
+  "newsletter.error.first_name_required": {
+    "defaultMessage": "First name is required."
+  },
+  "newsletter.label.consent": {
+    "defaultMessage": "I agree to the terms and conditions."
+  },
+  "newsletter.label.email": {
+    "defaultMessage": "Email"
+  },
+  "newsletter.label.first_name": {
+    "defaultMessage": "First Name"
+  },
+  "newsletter.label.last_name_optional": {
+    "defaultMessage": "Last Name (Optional)"
+  },
+  "newsletter.label.phone_optional": {
+    "defaultMessage": "Phone (Optional)"
+  },
+  "newsletter.placeholder.email": {
+    "defaultMessage": "you@email.com"
+  },
+  "newsletter.success.subscribed": {
+    "defaultMessage": "Successfully subscribed!"
+  },
   "offline_banner.description.browsing_offline_mode": {
     "defaultMessage": "You're currently browsing in offline mode"
   },

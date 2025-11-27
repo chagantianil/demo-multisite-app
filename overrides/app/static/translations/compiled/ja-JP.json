@@ -2373,6 +2373,78 @@
       "value": "ユーザー名またはパスワードが間違っています。もう一度お試しください。"
     }
   ],
+  "newsletter.button.subscribe": [
+    {
+      "type": 0,
+      "value": "登録する"
+    }
+  ],
+  "newsletter.error.consent_required": [
+    {
+      "type": 0,
+      "value": "登録するには同意が必要です。"
+    }
+  ],
+  "newsletter.error.email_invalid": [
+    {
+      "type": 0,
+      "value": "有効なメールアドレスを入力してください。"
+    }
+  ],
+  "newsletter.error.email_required": [
+    {
+      "type": 0,
+      "value": "メールアドレスは必須です。"
+    }
+  ],
+  "newsletter.error.first_name_required": [
+    {
+      "type": 0,
+      "value": "名は必須です。"
+    }
+  ],
+  "newsletter.label.consent": [
+    {
+      "type": 0,
+      "value": "利用規約に同意します。"
+    }
+  ],
+  "newsletter.label.email": [
+    {
+      "type": 0,
+      "value": "メールアドレス"
+    }
+  ],
+  "newsletter.label.first_name": [
+    {
+      "type": 0,
+      "value": "名"
+    }
+  ],
+  "newsletter.label.last_name_optional": [
+    {
+      "type": 0,
+      "value": "姓（任意）"
+    }
+  ],
+  "newsletter.label.phone_optional": [
+    {
+      "type": 0,
+      "value": "電話番号（任意）"
+    }
+  ],
+  "newsletter.placeholder.email": [
+    {
+      "type": 0,
+      "value": "example@email.com"
+    }
+  ],
+  "newsletter.success.subscribed": [
+    {
+      "type": 0,
+      "value": "登録が完了しました！"
+    }
+  ],
   "offline_banner.description.browsing_offline_mode": [
     {
       "type": 0,

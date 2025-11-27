@@ -7,8 +7,7 @@
 
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {z} from 'zod'
+import {useIntl} from 'react-intl'
 import {useConfig, useAccessToken} from '@salesforce/commerce-sdk-react'
 import {
     Box,
@@ -24,21 +23,8 @@ import {
     CloseButton
 } from '@chakra-ui/react'
 
-// Newsletter validation schema
-const NewsletterSchema = z.object({
-    email: z
-        .string()
-        .min(1, {message: 'Email is required.'})
-        .email({message: 'Please enter a valid email.'}),
-    firstName: z.string().min(1, {message: 'First name is required.'}),
-    lastName: z.string().optional(),
-    phone: z.string().optional(),
-    consent: z.boolean().refine((val) => val === true, {
-        message: 'You must consent to subscribe.'
-    })
-})
-
 const NewsletterForm = () => {
+    const intl = useIntl()
     const {organizationId, siteId, locale} = useConfig()
     const {getTokenWhenReady} = useAccessToken()
 
@@ -51,7 +37,6 @@ const NewsletterForm = () => {
         reset,
         formState: {errors}
     } = useForm({
-        resolver: zodResolver(NewsletterSchema),
         defaultValues: {
             email: '',
             firstName: '',
@@ -97,7 +82,10 @@ const NewsletterForm = () => {
 
             setSubmitStatus({
                 status: 'success',
-                message: 'Successfully subscribed!'
+                message: intl.formatMessage({
+                    id: 'newsletter.success.subscribed',
+                    defaultMessage: 'Successfully subscribed!'
+                })
             })
             reset()
         } catch (error) {
@@ -115,7 +103,10 @@ const NewsletterForm = () => {
             <Stack spacing={3}>
                 <FormControl isInvalid={!!errors.firstName}>
                     <FormLabel htmlFor="footer-firstName" fontSize="sm" color="gray.200">
-                        First Name
+                        {intl.formatMessage({
+                            id: 'newsletter.label.first_name',
+                            defaultMessage: 'First Name'
+                        })}
                     </FormLabel>
                     <Input
                         id="footer-firstName"
@@ -124,14 +115,22 @@ const NewsletterForm = () => {
                         border="none"
                         color="white"
                         _placeholder={{color: 'gray.400'}}
-                        {...register('firstName')}
+                        {...register('firstName', {
+                            required: intl.formatMessage({
+                                id: 'newsletter.error.first_name_required',
+                                defaultMessage: 'First name is required.'
+                            })
+                        })}
                     />
                     <FormErrorMessage fontSize="xs">{errors.firstName?.message}</FormErrorMessage>
                 </FormControl>
 
                 <FormControl isInvalid={!!errors.lastName}>
                     <FormLabel htmlFor="footer-lastName" fontSize="sm" color="gray.200">
-                        Last Name (Optional)
+                        {intl.formatMessage({
+                            id: 'newsletter.label.last_name_optional',
+                            defaultMessage: 'Last Name (Optional)'
+                        })}
                     </FormLabel>
                     <Input
                         id="footer-lastName"
@@ -147,7 +146,10 @@ const NewsletterForm = () => {
 
                 <FormControl isInvalid={!!errors.email}>
                     <FormLabel htmlFor="footer-email" fontSize="sm" color="gray.200">
-                        Email
+                        {intl.formatMessage({
+                            id: 'newsletter.label.email',
+                            defaultMessage: 'Email'
+                        })}
                     </FormLabel>
                     <Input
                         id="footer-email"
@@ -157,15 +159,33 @@ const NewsletterForm = () => {
                         border="none"
                         color="white"
                         _placeholder={{color: 'gray.400'}}
-                        placeholder="you@email.com"
-                        {...register('email')}
+                        placeholder={intl.formatMessage({
+                            id: 'newsletter.placeholder.email',
+                            defaultMessage: 'you@email.com'
+                        })}
+                        {...register('email', {
+                            required: intl.formatMessage({
+                                id: 'newsletter.error.email_required',
+                                defaultMessage: 'Email is required.'
+                            }),
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                message: intl.formatMessage({
+                                    id: 'newsletter.error.email_invalid',
+                                    defaultMessage: 'Please enter a valid email.'
+                                })
+                            }
+                        })}
                     />
                     <FormErrorMessage fontSize="xs">{errors.email?.message}</FormErrorMessage>
                 </FormControl>
 
                 <FormControl isInvalid={!!errors.phone}>
                     <FormLabel htmlFor="footer-phone" fontSize="sm" color="gray.200">
-                        Phone (Optional)
+                        {intl.formatMessage({
+                            id: 'newsletter.label.phone_optional',
+                            defaultMessage: 'Phone (Optional)'
+                        })}
                     </FormLabel>
                     <Input
                         id="footer-phone"
@@ -185,10 +205,20 @@ const NewsletterForm = () => {
                         id="footer-consent"
                         colorScheme="blue"
                         size="sm"
-                        {...register('consent')}
+                        {...register('consent', {
+                            validate: (value) =>
+                                value === true ||
+                                intl.formatMessage({
+                                    id: 'newsletter.error.consent_required',
+                                    defaultMessage: 'You must consent to subscribe.'
+                                })
+                        })}
                     >
                         <Box as="span" fontSize="xs" color="gray.300">
-                            I agree to the terms and conditions.
+                            {intl.formatMessage({
+                                id: 'newsletter.label.consent',
+                                defaultMessage: 'I agree to the terms and conditions.'
+                            })}
                         </Box>
                     </Checkbox>
                     <FormErrorMessage fontSize="xs">{errors.consent?.message}</FormErrorMessage>
@@ -201,7 +231,10 @@ const NewsletterForm = () => {
                     isLoading={isLoading}
                     width="full"
                 >
-                    Subscribe
+                    {intl.formatMessage({
+                        id: 'newsletter.button.subscribe',
+                        defaultMessage: 'Subscribe'
+                    })}
                 </Button>
 
                 {submitStatus && (

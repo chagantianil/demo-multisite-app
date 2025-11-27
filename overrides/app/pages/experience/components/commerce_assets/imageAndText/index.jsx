@@ -7,7 +7,7 @@
 
 import React, {memo} from 'react'
 import PropTypes from 'prop-types'
-import {Box, Image, Link} from '@chakra-ui/react'
+import {Box, Image, LinkBox, LinkOverlay, AbsoluteCenter, VStack} from '@chakra-ui/react'
 
 /**
  * ImageAndText Component
@@ -20,8 +20,9 @@ import {Box, Image, Link} from '@chakra-ui/react'
 const ImageAndText = memo(({data, id}) => {
     const {image, heading, ITCText, ITCLink, alt} = data || {}
 
-    return (
-        <Box className="image-and-text" data-component-id={id} mb={6}>
+    // Image and heading content (used with or without link)
+    const ImageContent = (
+        <>
             {image?.url && (
                 <Image
                     src={image.url}
@@ -34,29 +35,52 @@ const ImageAndText = memo(({data, id}) => {
                 />
             )}
             {heading && (
-                <Box
-                    mt={4}
+                <AbsoluteCenter
+                    textAlign="center"
+                    color="white"
+                    textShadow="0 2px 4px rgba(0,0,0,0.5)"
+                    px={4}
                     dangerouslySetInnerHTML={{__html: heading}}
                     sx={{
-                        '& h1': {fontSize: '2xl', fontWeight: 'bold'},
-                        '& h2': {fontSize: 'xl', fontWeight: 'semibold'},
-                        '& h3': {fontSize: 'lg', fontWeight: 'medium'}
+                        '& h1': {fontSize: {base: '2xl', md: '4xl'}, fontWeight: 'bold'},
+                        '& h2': {fontSize: {base: 'xl', md: '3xl'}, fontWeight: 'semibold'},
+                        '& h3': {fontSize: {base: 'lg', md: '2xl'}, fontWeight: 'medium'}
                     }}
                 />
             )}
+        </>
+    )
+
+    return (
+        <Box className="image-and-text" data-component-id={id} mb={6}>
+            {/* Image container with heading overlay - wrapped in link if ITCLink exists */}
+            {ITCLink ? (
+                <LinkBox
+                    position="relative"
+                    cursor="pointer"
+                    _hover={{opacity: 0.9}}
+                    transition="opacity 0.2s"
+                >
+                    <LinkOverlay href={ITCLink} />
+                    {ImageContent}
+                </LinkBox>
+            ) : (
+                <Box position="relative">
+                    {ImageContent}
+                </Box>
+            )}
+
+            {/* Text below image - center aligned */}
             {ITCText && (
-                <Box
-                    mt={2}
-                    dangerouslySetInnerHTML={{__html: ITCText}}
-                    sx={{
-                        '& p': {lineHeight: 1.6}
-                    }}
-                />
-            )}
-            {ITCLink && (
-                <Link href={ITCLink} color="blue.500" mt={2} display="inline-block">
-                    Learn More
-                </Link>
+                <VStack spacing={2} mt={4}>
+                    <Box
+                        textAlign="center"
+                        dangerouslySetInnerHTML={{__html: ITCText}}
+                        sx={{
+                            '& p': {lineHeight: 1.6}
+                        }}
+                    />
+                </VStack>
             )}
         </Box>
     )
