@@ -8,7 +8,6 @@
 import React, {useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useIntl} from 'react-intl'
-import {useConfig, useAccessToken} from '@salesforce/commerce-sdk-react'
 import {
     Box,
     Button,
@@ -22,11 +21,11 @@ import {
     AlertIcon,
     CloseButton
 } from '@chakra-ui/react'
+import useCustomAPI from '../../hooks/use-custom-api'
 
 const NewsletterForm = () => {
     const intl = useIntl()
-    const {organizationId, siteId, locale} = useConfig()
-    const {getTokenWhenReady} = useAccessToken()
+    const {callCustomAPI} = useCustomAPI()
 
     const [submitStatus, setSubmitStatus] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -51,29 +50,19 @@ const NewsletterForm = () => {
         setSubmitStatus(null)
 
         try {
-            const token = await getTokenWhenReady()
-            const url = `/mobify/proxy/api/custom/newsletter/v1/organizations/${organizationId}/subscribe?siteId=${siteId}&locale=${locale}&c_email=${data.email}&c_firstName=${data.firstName}&c_lastName=${data.lastName}&c_phone=${data.phone}&c_consent=${data.consent.toString()}`
-
-            const response = await fetch(url, {
+            const result = await callCustomAPI({
                 method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                folder: 'newsletter',
+                endpoint: 'subscribe',
+                version: 'v1',
+                params: {
+                    c_email: data.email,
+                    c_firstName: data.firstName,
+                    c_lastName: data.lastName,
+                    c_phone: data.phone,
+                    c_consent: data.consent.toString()
                 }
             })
-
-            if (!response.ok) {
-                let errorMessage = `Subscription failed. (${response.status})`
-                try {
-                    const err = await response.json()
-                    errorMessage = err.detail || err.message || errorMessage
-                } catch (e) {
-                    // non-JSON fallback
-                }
-                throw new Error(errorMessage)
-            }
-
-            const result = await response.json()
 
             const isSuccess = result.success === true || result.success === 'true'
             if (!isSuccess) {
@@ -252,4 +241,3 @@ const NewsletterForm = () => {
 }
 
 export default NewsletterForm
-
