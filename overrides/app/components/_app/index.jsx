@@ -36,7 +36,8 @@ import {SkipNavLink, SkipNavContent} from '@chakra-ui/skip-nav'
 import {CurrencyProvider} from '@salesforce/retail-react-app/app/contexts'
 
 // Local Project Components
-import Header from '@salesforce/retail-react-app/app/components/header'
+// Import from overridden Header (for c_marketingConsent support)
+import Header from '../header'
 import OfflineBanner from '@salesforce/retail-react-app/app/components/offline-banner'
 import OfflineBoundary from '@salesforce/retail-react-app/app/components/offline-boundary'
 import ScrollToTop from '@salesforce/retail-react-app/app/components/scroll-to-top'
@@ -52,7 +53,8 @@ import {StoreLocatorModal} from '@salesforce/retail-react-app/app/components/sto
 import Island from '@salesforce/retail-react-app/app/components/island'
 
 // Hooks
-import {AuthModal, useAuthModal} from '@salesforce/retail-react-app/app/hooks/use-auth-modal'
+// Import from overridden use-auth-modal hook (for c_marketingConsent support)
+import {AuthModal, useAuthModal} from '../../hooks/use-auth-modal'
 import {useStoreLocatorModal} from '@salesforce/retail-react-app/app/hooks/use-store-locator'
 import {
     DntNotification,

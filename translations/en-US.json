@@ -1480,6 +1480,18 @@
   "profile_card.title.my_profile": {
     "defaultMessage": "My Profile"
   },
+  "profile_card.label.marketing_consent": {
+    "defaultMessage": "I agree to receive marketing communications"
+  },
+  "profile_card.label.marketing_consent_title": {
+    "defaultMessage": "Marketing Consent"
+  },
+  "profile_card.message.opted_in": {
+    "defaultMessage": "Opted In"
+  },
+  "profile_card.message.opted_out": {
+    "defaultMessage": "Opted Out"
+  },
   "profile_fields.label.profile_form": {
     "defaultMessage": "Profile Form"
   },

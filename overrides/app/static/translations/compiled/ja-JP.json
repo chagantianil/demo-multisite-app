@@ -3053,6 +3053,30 @@
       "value": "マイプロフィール"
     }
   ],
+  "profile_card.label.marketing_consent": [
+    {
+      "type": 0,
+      "value": "マーケティングメールの受信に同意します"
+    }
+  ],
+  "profile_card.label.marketing_consent_title": [
+    {
+      "type": 0,
+      "value": "マーケティング同意"
+    }
+  ],
+  "profile_card.message.opted_in": [
+    {
+      "type": 0,
+      "value": "同意済み"
+    }
+  ],
+  "profile_card.message.opted_out": [
+    {
+      "type": 0,
+      "value": "未同意"
+    }
+  ],
   "profile_fields.label.profile_form": [
     {
       "type": 0,

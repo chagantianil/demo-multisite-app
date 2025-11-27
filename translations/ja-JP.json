@@ -1276,6 +1276,18 @@
   "profile_card.title.my_profile": {
     "defaultMessage": "マイプロフィール"
   },
+  "profile_card.label.marketing_consent": {
+    "defaultMessage": "マーケティングメールの受信に同意します"
+  },
+  "profile_card.label.marketing_consent_title": {
+    "defaultMessage": "マーケティング同意"
+  },
+  "profile_card.message.opted_in": {
+    "defaultMessage": "同意済み"
+  },
+  "profile_card.message.opted_out": {
+    "defaultMessage": "未同意"
+  },
   "profile_fields.label.profile_form": {
     "defaultMessage": "プロフィールフォーム"
   },

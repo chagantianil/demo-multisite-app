@@ -23,6 +23,7 @@ const MyNewRoute = loadable(() => import('./pages/my-new-route'))
 const ProductDetail = loadable(() => import('./pages/product-detail'))
 const PageDetail = loadable(() => import('./pages/page/[pageId]'), {fallback})
 const StyleGuide = loadable(() => import('./pages/style-guide'), {fallback})
+const Registration = loadable(() => import('./pages/registration'), {fallback})
 
 const routes = [
     {
@@ -45,6 +46,11 @@ const routes = [
     {
         path: '/style-guide',
         component: StyleGuide
+    },
+    {
+        path: '/registration',
+        component: Registration,
+        exact: true
     },
     ..._routes
 ]
