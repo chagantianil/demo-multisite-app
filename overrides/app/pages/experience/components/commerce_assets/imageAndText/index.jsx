@@ -12,7 +12,7 @@ import {Box, Image, LinkBox, LinkOverlay, AbsoluteCenter, VStack} from '@chakra-
 /**
  * ImageAndText Component
  * Renders an image with heading, description text, and optional link
- * 
+ *
  * Performance optimizations:
  * - Lazy loading images
  * - Memoized component
@@ -65,9 +65,7 @@ const ImageAndText = memo(({data, id}) => {
                     {ImageContent}
                 </LinkBox>
             ) : (
-                <Box position="relative">
-                    {ImageContent}
-                </Box>
+                <Box position="relative">{ImageContent}</Box>
             )}
 
             {/* Text below image - center aligned */}

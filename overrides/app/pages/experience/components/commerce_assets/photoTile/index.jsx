@@ -12,7 +12,7 @@ import {Box, Image} from '@chakra-ui/react'
 /**
  * PhotoTile Component
  * Renders a simple image tile
- * 
+ *
  * Performance optimizations:
  * - Lazy loading images
  * - Memoized component

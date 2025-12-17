@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import React, {useState} from 'react'
+import {useForm} from 'react-hook-form'
+import {zodResolver} from '@hookform/resolvers/zod'
 import NewsletterSchema from '../../../app/schemas/newsletter'
 
-import { useConfig, useAccessToken } from '@salesforce/commerce-sdk-react'
+import {useConfig, useAccessToken} from '@salesforce/commerce-sdk-react'
 
 import {
     Box,
@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 
 export const NewsletterForm = () => {
-    const { organizationId, shortCode, siteId, locale } = useConfig()
+    const {organizationId, shortCode, siteId, locale} = useConfig()
     const {getTokenWhenReady} = useAccessToken()
 
     const [submitStatus, setSubmitStatus] = useState(null)
@@ -30,7 +30,7 @@ export const NewsletterForm = () => {
         register,
         handleSubmit,
         reset,
-        formState: { errors }
+        formState: {errors}
     } = useForm({
         resolver: zodResolver(NewsletterSchema),
         defaultValues: {
@@ -48,12 +48,16 @@ export const NewsletterForm = () => {
 
         try {
             const token = await getTokenWhenReady()
-            const url = `/mobify/proxy/api/custom/newsletter/v1/organizations/${organizationId}/subscribe?siteId=${siteId}&locale=${locale}&c_email=${data.email}&c_firstName=${data.firstName}&c_lastName=${data.lastName}&c_phone=${data.phone}&c_consent=${data.consent.toString()}`
+            const url = `/mobify/proxy/api/custom/newsletter/v1/organizations/${organizationId}/subscribe?siteId=${siteId}&locale=${locale}&c_email=${
+                data.email
+            }&c_firstName=${data.firstName}&c_lastName=${data.lastName}&c_phone=${
+                data.phone
+            }&c_consent=${data.consent.toString()}`
 
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 }
             })
@@ -82,7 +86,6 @@ export const NewsletterForm = () => {
                 message: 'Successfully subscribed!'
             })
             reset()
-
         } catch (error) {
             setSubmitStatus({
                 status: 'error',
@@ -94,13 +97,7 @@ export const NewsletterForm = () => {
     }
 
     return (
-        <Box
-            as="form"
-            onSubmit={handleSubmit(onSubmit)}
-            p={4}
-            borderWidth={1}
-            borderRadius="md"
-        >
+        <Box as="form" onSubmit={handleSubmit(onSubmit)} p={4} borderWidth={1} borderRadius="md">
             <Stack spacing={4}>
                 <FormControl isInvalid={!!errors.firstName}>
                     <FormLabel htmlFor="firstName">First Name</FormLabel>

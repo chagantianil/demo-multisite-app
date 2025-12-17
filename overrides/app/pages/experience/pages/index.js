@@ -7,14 +7,14 @@
 
 /**
  * Page Registry
- * 
+ *
  * Register all page types here.
  * The key should match the page's typeId from the Page Designer response.
- * 
+ *
  * To add a new page type:
  * 1. Create the page component in experience/pages/{pageType}/index.jsx
  * 2. Import and register it below
- * 
+ *
  * Example:
  *   import MyCustomPage from './myCustomPage'
  *   export const pageRegistry = {
@@ -28,4 +28,3 @@ import StorePage from './storePage'
 export const pageRegistry = {
     storePage: StorePage
 }
-

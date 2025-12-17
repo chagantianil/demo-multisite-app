@@ -96,4 +96,3 @@ Registration.propTypes = {
 }
 
 export default Registration
-

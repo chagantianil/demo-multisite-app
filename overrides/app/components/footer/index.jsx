@@ -236,4 +236,3 @@ const LegalLinks = ({variant}) => {
 LegalLinks.propTypes = {
     variant: PropTypes.oneOf(['vertical', 'horizontal'])
 }
-

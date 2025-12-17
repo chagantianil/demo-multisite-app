@@ -13,18 +13,14 @@ import {Region} from '../../core'
 /**
  * StorePage - Default page type for store pages
  * Renders all regions with their components
- * 
+ *
  * Performance: Memoized to prevent unnecessary re-renders
  */
 const StorePage = memo(({regions = [], data, id, name}) => {
     return (
         <Box className="store-page" data-page-id={id} data-page-name={name}>
             {regions.map((region, index) => (
-                <Region
-                    key={region.id || index}
-                    region={region}
-                    mb={4}
-                />
+                <Region key={region.id || index} region={region} mb={4} />
             ))}
         </Box>
     )

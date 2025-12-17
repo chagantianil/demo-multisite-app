@@ -33,12 +33,7 @@ import {
 import Field from '@salesforce/retail-react-app/app/components/field'
 import LoginState from '@salesforce/retail-react-app/app/pages/checkout/partials/login-state'
 // Import from overridden use-auth-modal hook (for c_marketingConsent support)
-import {
-    AuthModal,
-    EMAIL_VIEW,
-    PASSWORD_VIEW,
-    useAuthModal
-} from '../../../hooks/use-auth-modal'
+import {AuthModal, EMAIL_VIEW, PASSWORD_VIEW, useAuthModal} from '../../../hooks/use-auth-modal'
 import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
 import {useCurrentCustomer} from '@salesforce/retail-react-app/app/hooks/use-current-customer'
 import {useCurrentBasket} from '@salesforce/retail-react-app/app/hooks/use-current-basket'
@@ -330,4 +325,3 @@ SignOutConfirmationDialog.propTypes = {
 }
 
 export default ContactInfo
-

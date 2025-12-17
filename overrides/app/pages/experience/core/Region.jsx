@@ -13,7 +13,7 @@ import ComponentRenderer from './ComponentRenderer'
 /**
  * Region - Renders a page region with its components
  * Each region gets an HTML id attribute matching the region id
- * 
+ *
  * Performance: Memoized to prevent unnecessary re-renders
  */
 const Region = memo(({region, ...props}) => {

@@ -68,4 +68,3 @@ const withRegistration = (
 }
 
 export default withRegistration
-

@@ -11,10 +11,10 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 
 /**
  * Custom API hook for making authenticated requests to custom SFCC endpoints
- * 
+ *
  * @example
  * const {callCustomAPI} = useCustomAPI()
- * 
+ *
  * // POST request
  * const result = await callCustomAPI({
  *     method: 'POST',
@@ -22,7 +22,7 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
  *     endpoint: 'subscribe',
  *     params: { c_email: 'test@email.com', c_firstName: 'John' }
  * })
- * 
+ *
  * // GET request with body
  * const data = await callCustomAPI({
  *     method: 'GET',
@@ -33,12 +33,12 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
  */
 const useCustomAPI = () => {
     const {getTokenWhenReady} = useAccessToken()
-    
+
     /**
      * Make an authenticated request to a custom API endpoint
-     * 
+     *
      * URL Format: /mobify/proxy/api/custom/{folder}/{version}/organizations/{organizationId}/{endpoint}?{params}
-     * 
+     *
      * @param {Object} options - Request options
      * @param {string} options.method - HTTP method (GET, POST, PUT, PATCH, DELETE)
      * @param {string} options.folder - API folder/namespace (e.g., 'newsletter', 'products')
@@ -52,101 +52,108 @@ const useCustomAPI = () => {
      * @returns {Promise<Object>} - Response data
      * @throws {Error} - If request fails
      */
-    const callCustomAPI = useCallback(async (options) => {
-        const {
-            method,
-            folder,
-            endpoint,
-            version = 'v1',
-            body = null,
-            params = {},
-            headers = {},
-            includeSiteId = true,
-            includeLocale = true
-        } = options
-        
-        // Validate required parameters
-        if (!method) {
-            throw new Error('method is required')
-        }
-        if (!folder) {
-            throw new Error('folder is required')
-        }
-        if (!endpoint) {
-            throw new Error('endpoint is required')
-        }
-        
-        const config = getConfig()
-        const {organizationId, siteId} = config.app.commerceAPI.parameters
-        const locale = config.app.defaultLocale || 'en-US'
-        
-        // Build query string
-        const queryParams = new URLSearchParams()
-        
-        if (includeSiteId && siteId) {
-            queryParams.append('siteId', siteId)
-        }
-        
-        if (includeLocale && locale) {
-            queryParams.append('locale', locale)
-        }
-        
-        // Add custom query parameters
-        Object.entries(params).forEach(([key, value]) => {
-            if (value !== undefined && value !== null) {
-                queryParams.append(key, String(value))
+    const callCustomAPI = useCallback(
+        async (options) => {
+            const {
+                method,
+                folder,
+                endpoint,
+                version = 'v1',
+                body = null,
+                params = {},
+                headers = {},
+                includeSiteId = true,
+                includeLocale = true
+            } = options
+
+            // Validate required parameters
+            if (!method) {
+                throw new Error('method is required')
             }
-        })
-        
-        // Build URL: /mobify/proxy/api/custom/{folder}/{version}/organizations/{organizationId}/{endpoint}
-        const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ''
-        const url = `/mobify/proxy/api/custom/${folder}/${version}/organizations/${organizationId}/${endpoint}${queryString}`
-        
-        // Get auth token
-        const token = await getTokenWhenReady()
-        
-        // Build request options
-        const fetchOptions = {
-            method: method.toUpperCase(),
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                ...headers
+            if (!folder) {
+                throw new Error('folder is required')
             }
-        }
-        
-        // Add body for non-GET requests
-        if (body && method.toUpperCase() !== 'GET') {
-            fetchOptions.body = JSON.stringify(body)
-        }
-        
-        // Make request
-        const response = await fetch(url, fetchOptions)
-        
-        // Parse response
-        let data
-        const contentType = response.headers.get('content-type')
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json()
-        } else {
-            data = await response.text()
-        }
-        
-        // Handle errors
-        if (!response.ok) {
-            const errorMessage = typeof data === 'object' 
-                ? data.detail || data.message || data.error || `Request failed (${response.status})`
-                : `Request failed (${response.status})`
-            
-            const error = new Error(errorMessage)
-            error.status = response.status
-            error.response = data
-            throw error
-        }
-        
-        return data
-    }, [getTokenWhenReady])
-    
+            if (!endpoint) {
+                throw new Error('endpoint is required')
+            }
+
+            const config = getConfig()
+            const {organizationId, siteId} = config.app.commerceAPI.parameters
+            const locale = config.app.defaultLocale || 'en-US'
+
+            // Build query string
+            const queryParams = new URLSearchParams()
+
+            if (includeSiteId && siteId) {
+                queryParams.append('siteId', siteId)
+            }
+
+            if (includeLocale && locale) {
+                queryParams.append('locale', locale)
+            }
+
+            // Add custom query parameters
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null) {
+                    queryParams.append(key, String(value))
+                }
+            })
+
+            // Build URL: /mobify/proxy/api/custom/{folder}/{version}/organizations/{organizationId}/{endpoint}
+            const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ''
+            const url = `/mobify/proxy/api/custom/${folder}/${version}/organizations/${organizationId}/${endpoint}${queryString}`
+
+            // Get auth token
+            const token = await getTokenWhenReady()
+
+            // Build request options
+            const fetchOptions = {
+                method: method.toUpperCase(),
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    ...headers
+                }
+            }
+
+            // Add body for non-GET requests
+            if (body && method.toUpperCase() !== 'GET') {
+                fetchOptions.body = JSON.stringify(body)
+            }
+
+            // Make request
+            const response = await fetch(url, fetchOptions)
+
+            // Parse response
+            let data
+            const contentType = response.headers.get('content-type')
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json()
+            } else {
+                data = await response.text()
+            }
+
+            // Handle errors
+            if (!response.ok) {
+                const errorMessage =
+                    typeof data === 'object'
+                        ? data.detail ||
+                          data.message ||
+                          data.error ||
+                          `Request failed (${response.status})`
+                        : `Request failed (${response.status})`
+
+                const error = new Error(errorMessage)
+                error.status = response.status
+                error.response = data
+                throw error
+            }
+
+            return data
+        },
+        [getTokenWhenReady]
+    )
+
     return {callCustomAPI}
 }
 

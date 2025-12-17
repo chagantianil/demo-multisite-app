@@ -94,7 +94,13 @@ const ProfileCard = ({allowPasswordChange = false}) => {
             // Custom attribute: marketingConsent
             marketingConsent: customer?.c_marketingConsent || false
         })
-    }, [customer?.firstName, customer?.lastName, customer?.email, customer?.phoneHome, customer?.c_marketingConsent])
+    }, [
+        customer?.firstName,
+        customer?.lastName,
+        customer?.email,
+        customer?.phoneHome,
+        customer?.c_marketingConsent
+    ])
 
     const submit = async (values) => {
         try {
@@ -168,11 +174,13 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                                 </Alert>
                             )}
                             <ProfileFields form={form} />
-                            
+
                             {/* Marketing Consent Checkbox - Edit Mode */}
                             <Checkbox
                                 isChecked={form.watch('marketingConsent')}
-                                onChange={(e) => form.setValue('marketingConsent', e.target.checked)}
+                                onChange={(e) =>
+                                    form.setValue('marketingConsent', e.target.checked)
+                                }
                                 colorScheme="blue"
                             >
                                 <Text fontSize="sm">
@@ -182,7 +190,7 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                                     />
                                 </Text>
                             </Checkbox>
-                            
+
                             <FormActionButtons
                                 onCancel={() => {
                                     setIsEditing(false)
@@ -205,9 +213,9 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             />
                         </Text>
 
-                        <ChakraSkeleton 
-                            isLoaded={!!customer?.firstName} 
-                            height="21px" 
+                        <ChakraSkeleton
+                            isLoaded={!!customer?.firstName}
+                            height="21px"
                             width={customer?.firstName ? 'auto' : '140px'}
                         >
                             <Text fontSize="sm">
@@ -215,7 +223,7 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             </Text>
                         </ChakraSkeleton>
                     </Box>
-                    
+
                     {/* Email */}
                     <Box>
                         <Text fontSize="sm" fontWeight="bold" marginBottom={2}>
@@ -225,15 +233,15 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             />
                         </Text>
 
-                        <ChakraSkeleton 
-                            isLoaded={!!customer?.email} 
-                            height="21px" 
+                        <ChakraSkeleton
+                            isLoaded={!!customer?.email}
+                            height="21px"
                             width={customer?.email ? 'auto' : '180px'}
                         >
                             <Text fontSize="sm">{customer?.email}</Text>
                         </ChakraSkeleton>
                     </Box>
-                    
+
                     {/* Phone Number */}
                     <Box>
                         <Text fontSize="sm" fontWeight="bold" marginBottom={2}>
@@ -243,9 +251,9 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             />
                         </Text>
 
-                        <ChakraSkeleton 
-                            isLoaded={!!customer?.email} 
-                            height="21px" 
+                        <ChakraSkeleton
+                            isLoaded={!!customer?.email}
+                            height="21px"
                             width={customer?.email ? 'auto' : '120px'}
                         >
                             <Text fontSize="sm">
@@ -258,7 +266,7 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             </Text>
                         </ChakraSkeleton>
                     </Box>
-                    
+
                     {/* Marketing Consent */}
                     <Box>
                         <Text fontSize="sm" fontWeight="bold" marginBottom={2}>
@@ -268,9 +276,9 @@ const ProfileCard = ({allowPasswordChange = false}) => {
                             />
                         </Text>
 
-                        <ChakraSkeleton 
-                            isLoaded={!!customer?.email} 
-                            height="21px" 
+                        <ChakraSkeleton
+                            isLoaded={!!customer?.email}
+                            height="21px"
                             width={customer?.email ? 'auto' : '100px'}
                         >
                             <Text fontSize="sm">
@@ -428,4 +436,3 @@ const AccountDetail = () => {
 AccountDetail.getTemplateName = () => 'account-detail'
 
 export default AccountDetail
-

@@ -13,7 +13,7 @@ import {SimpleGrid, Box} from '@chakra-ui/react'
  * MobileGrid2r2c Component
  * A 2-row, 2-column responsive grid layout
  * Renders nested regions (column1, column2, column3, column4)
- * 
+ *
  * Performance: Memoized to prevent unnecessary re-renders
  */
 const MobileGrid2r2c = memo(({data, regions = [], renderRegions, id}) => {

@@ -38,12 +38,12 @@ import {
 
 /**
  * Style Guide Page
- * 
+ *
  * All styles shown here are OPT-IN and do NOT override existing site styles.
  * Use these by explicitly applying the style names to your components.
- * 
+ *
  * - Text styles: textStyle="brandH1", textStyle="large"
- * - Layer styles: layerStyle="card", layerStyle="brandBadge"  
+ * - Layer styles: layerStyle="card", layerStyle="brandBadge"
  * - Button variants: variant="brandPrimary"
  * - Colors: color="brand.500", bg="secondary.100"
  */
@@ -61,8 +61,15 @@ const COLOR_PALETTES = [
 const COLOR_SHADES = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900']
 const DEFAULT_BUTTON_VARIANTS = ['solid', 'outline', 'ghost', 'link']
 const CUSTOM_BUTTON_VARIANTS = [
-    'brandPrimary', 'brandSecondary', 'brandOutline', 'brandGhost',
-    'brandLink', 'brandDanger', 'brandNeutral', 'brandSuccess', 'brandWarning'
+    'brandPrimary',
+    'brandSecondary',
+    'brandOutline',
+    'brandGhost',
+    'brandLink',
+    'brandDanger',
+    'brandNeutral',
+    'brandSuccess',
+    'brandWarning'
 ]
 const DEFAULT_BUTTON_SIZES = ['xs', 'sm', 'md', 'lg']
 const CUSTOM_BUTTON_SIZES = ['xs2', 'xl', 'xl2']
@@ -91,23 +98,26 @@ const FONT_WEIGHTS = ['normal', 'medium', 'semiBold', 'bold']
 
 const StyleGuide = memo(() => {
     // Icons list - memoized since it contains component references
-    const icons = useMemo(() => [
-        {Icon: ChevronRightIcon, name: 'ChevronRightIcon'},
-        {Icon: ChevronLeftIcon, name: 'ChevronLeftIcon'},
-        {Icon: SearchIcon, name: 'SearchIcon'},
-        {Icon: CartIcon, name: 'CartIcon'},
-        {Icon: UserIcon, name: 'UserIcon'},
-        {Icon: HeartIcon, name: 'HeartIcon'},
-        {Icon: HeartOutlineIcon, name: 'HeartOutlineIcon'},
-        {Icon: CheckIcon, name: 'CheckIcon'},
-        {Icon: CloseIcon, name: 'CloseIcon'},
-        {Icon: MenuIcon, name: 'MenuIcon'},
-        {Icon: PlusIcon, name: 'PlusIcon'},
-        {Icon: MinusIcon, name: 'MinusIcon'},
-        {Icon: TrashIcon, name: 'TrashIcon'},
-        {Icon: ArrowRightIcon, name: 'ArrowRightIcon'},
-        {Icon: ArrowLeftIcon, name: 'ArrowLeftIcon'}
-    ], [])
+    const icons = useMemo(
+        () => [
+            {Icon: ChevronRightIcon, name: 'ChevronRightIcon'},
+            {Icon: ChevronLeftIcon, name: 'ChevronLeftIcon'},
+            {Icon: SearchIcon, name: 'SearchIcon'},
+            {Icon: CartIcon, name: 'CartIcon'},
+            {Icon: UserIcon, name: 'UserIcon'},
+            {Icon: HeartIcon, name: 'HeartIcon'},
+            {Icon: HeartOutlineIcon, name: 'HeartOutlineIcon'},
+            {Icon: CheckIcon, name: 'CheckIcon'},
+            {Icon: CloseIcon, name: 'CloseIcon'},
+            {Icon: MenuIcon, name: 'MenuIcon'},
+            {Icon: PlusIcon, name: 'PlusIcon'},
+            {Icon: MinusIcon, name: 'MinusIcon'},
+            {Icon: TrashIcon, name: 'TrashIcon'},
+            {Icon: ArrowRightIcon, name: 'ArrowRightIcon'},
+            {Icon: ArrowLeftIcon, name: 'ArrowLeftIcon'}
+        ],
+        []
+    )
 
     return (
         <Box layerStyle="page" py={8}>
@@ -124,11 +134,14 @@ const StyleGuide = memo(() => {
                 <HStack spacing={3}>
                     <Box w="8px" h="8px" bg="brand.500" borderRadius="full" />
                     <Box>
-                        <Text fontWeight="bold" mb={1}>All Styles Are Opt-In</Text>
+                        <Text fontWeight="bold" mb={1}>
+                            All Styles Are Opt-In
+                        </Text>
                         <Text textStyle="small" color="gray.700">
-                            These styles do NOT override existing site defaults. Apply them explicitly using{' '}
-                            <code>textStyle</code>, <code>layerStyle</code>, or <code>variant</code> props.
-                            Existing Chakra components and site styles remain unchanged.
+                            These styles do NOT override existing site defaults. Apply them
+                            explicitly using <code>textStyle</code>, <code>layerStyle</code>, or{' '}
+                            <code>variant</code> props. Existing Chakra components and site styles
+                            remain unchanged.
                         </Text>
                     </Box>
                 </HStack>
@@ -136,30 +149,80 @@ const StyleGuide = memo(() => {
 
             {/* Table of Contents */}
             <Box layerStyle="cardOutline" mb={12}>
-                <Heading size="md" mb={4}>Quick Navigation</Heading>
+                <Heading size="md" mb={4}>
+                    Quick Navigation
+                </Heading>
                 <SimpleGrid columns={{base: 2, md: 4}} spacing={2}>
-                    <Button as="a" href="#colors" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#colors"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         🎨 Colors
                     </Button>
-                    <Button as="a" href="#typography" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#typography"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         📝 Typography
                     </Button>
-                    <Button as="a" href="#buttons" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#buttons"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         🔘 Buttons
                     </Button>
-                    <Button as="a" href="#icons" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#icons"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         🎯 Icons
                     </Button>
-                    <Button as="a" href="#layouts" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#layouts"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         📐 Page Layouts
                     </Button>
-                    <Button as="a" href="#cards" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#cards"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         🃏 Cards
                     </Button>
-                    <Button as="a" href="#badges" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#badges"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         🏷️ Badges & Lists
                     </Button>
-                    <Button as="a" href="#spacing" variant="ghost" justifyContent="flex-start" size="sm">
+                    <Button
+                        as="a"
+                        href="#spacing"
+                        variant="ghost"
+                        justifyContent="flex-start"
+                        size="sm"
+                    >
                         📏 Spacing
                     </Button>
                 </SimpleGrid>
@@ -206,7 +269,14 @@ const StyleGuide = memo(() => {
                     </Text>
                     <SimpleGrid columns={{base: 2, md: 4}} spacing={4}>
                         <VStack layerStyle="cardOutline" p={4}>
-                            <Box w="100%" h="40px" bg="white" border="1px solid" borderColor="gray.200" borderRadius="md" />
+                            <Box
+                                w="100%"
+                                h="40px"
+                                bg="white"
+                                border="1px solid"
+                                borderColor="gray.200"
+                                borderRadius="md"
+                            />
                             <Text textStyle="small">background.primary</Text>
                         </VStack>
                         <VStack layerStyle="cardOutline" p={4}>
@@ -232,7 +302,10 @@ const StyleGuide = memo(() => {
             {/* ============================================ */}
             <Box id="typography" mb={16}>
                 <Heading textStyle="displayMedium" mb={6}>
-                    Typography <Badge colorScheme="blue" ml={2}>Opt-In</Badge>
+                    Typography{' '}
+                    <Badge colorScheme="blue" ml={2}>
+                        Opt-In
+                    </Badge>
                 </Heading>
                 <Text textStyle="base" color="gray.600" mb={4}>
                     All text styles are opt-in. Default text styling remains unchanged.
@@ -249,7 +322,13 @@ const StyleGuide = memo(() => {
                     </Text>
                     <VStack align="stretch" spacing={4} layerStyle="cardOutline">
                         {TEXT_STYLES.map(({name, label}) => (
-                            <HStack key={name} justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                            <HStack
+                                key={name}
+                                justify="space-between"
+                                py={2}
+                                borderBottom="1px"
+                                borderColor="gray.200"
+                            >
                                 <Text textStyle={name}>
                                     The quick brown fox jumps over the lazy dog
                                 </Text>
@@ -266,10 +345,14 @@ const StyleGuide = memo(() => {
                     </Text>
                     <VStack align="stretch" spacing={4} layerStyle="cardOutline">
                         {DISPLAY_STYLES.map(({name, label}) => (
-                            <HStack key={name} justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
-                                <Text textStyle={name}>
-                                    {label}
-                                </Text>
+                            <HStack
+                                key={name}
+                                justify="space-between"
+                                py={2}
+                                borderBottom="1px"
+                                borderColor="gray.200"
+                            >
+                                <Text textStyle={name}>{label}</Text>
                                 <Badge colorScheme="gray">{name}</Badge>
                             </HStack>
                         ))}
@@ -285,27 +368,57 @@ const StyleGuide = memo(() => {
                         Usage: <code>{`<Heading textStyle="brandH1">Heading</Heading>`}</code>
                     </Text>
                     <VStack align="stretch" spacing={4} layerStyle="cardOutline">
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH1">Brand H1 Heading</Text>
                             <Badge colorScheme="blue">brandH1</Badge>
                         </HStack>
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH2">Brand H2 Heading</Text>
                             <Badge colorScheme="blue">brandH2</Badge>
                         </HStack>
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH3">Brand H3 Heading</Text>
                             <Badge colorScheme="blue">brandH3</Badge>
                         </HStack>
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH4">Brand H4 Heading</Text>
                             <Badge colorScheme="blue">brandH4</Badge>
                         </HStack>
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH5">Brand H5 Heading</Text>
                             <Badge colorScheme="blue">brandH5</Badge>
                         </HStack>
-                        <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
+                        <HStack
+                            justify="space-between"
+                            py={2}
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             <Text textStyle="brandH6">Brand H6 Heading</Text>
                             <Badge colorScheme="blue">brandH6</Badge>
                         </HStack>
@@ -319,20 +432,32 @@ const StyleGuide = memo(() => {
                     </Text>
                     <SimpleGrid columns={{base: 1, md: 2}} spacing={4}>
                         <Box layerStyle="cardOutline" p={4}>
-                            <Text textStyle="brandLink" as="span" cursor="pointer">Brand Link (hover me)</Text>
-                            <Badge ml={2} colorScheme="blue">brandLink</Badge>
+                            <Text textStyle="brandLink" as="span" cursor="pointer">
+                                Brand Link (hover me)
+                            </Text>
+                            <Badge ml={2} colorScheme="blue">
+                                brandLink
+                            </Badge>
                         </Box>
                         <Box layerStyle="cardOutline" p={4}>
-                            <Text textStyle="brandLinkUnderline" as="span" cursor="pointer">Brand Link Underline</Text>
-                            <Badge ml={2} colorScheme="blue">brandLinkUnderline</Badge>
+                            <Text textStyle="brandLinkUnderline" as="span" cursor="pointer">
+                                Brand Link Underline
+                            </Text>
+                            <Badge ml={2} colorScheme="blue">
+                                brandLinkUnderline
+                            </Badge>
                         </Box>
                         <Box layerStyle="cardOutline" p={4}>
                             <Text textStyle="caption">Caption text for help</Text>
-                            <Badge ml={2} colorScheme="gray">caption</Badge>
+                            <Badge ml={2} colorScheme="gray">
+                                caption
+                            </Badge>
                         </Box>
                         <Box layerStyle="cardOutline" p={4}>
                             <Text textStyle="captionError">Error caption text</Text>
-                            <Badge ml={2} colorScheme="red">captionError</Badge>
+                            <Badge ml={2} colorScheme="red">
+                                captionError
+                            </Badge>
                         </Box>
                     </SimpleGrid>
                 </Box>
@@ -369,10 +494,14 @@ const StyleGuide = memo(() => {
                     </Text>
                     <VStack align="stretch" spacing={4} layerStyle="cardOutline">
                         {LABEL_STYLES.map(({name, label}) => (
-                            <HStack key={name} justify="space-between" py={2} borderBottom="1px" borderColor="gray.200">
-                                <Text textStyle={name}>
-                                    {label} Label Text
-                                </Text>
+                            <HStack
+                                key={name}
+                                justify="space-between"
+                                py={2}
+                                borderBottom="1px"
+                                borderColor="gray.200"
+                            >
+                                <Text textStyle={name}>{label} Label Text</Text>
                                 <Badge colorScheme="gray">{name}</Badge>
                             </HStack>
                         ))}
@@ -406,7 +535,10 @@ const StyleGuide = memo(() => {
             {/* ============================================ */}
             <Box id="buttons" mb={16}>
                 <Heading textStyle="displayMedium" mb={6}>
-                    Buttons <Badge colorScheme="blue" ml={2}>Opt-In</Badge>
+                    Buttons{' '}
+                    <Badge colorScheme="blue" ml={2}>
+                        Opt-In
+                    </Badge>
                 </Heading>
                 <Text textStyle="base" color="gray.600" mb={4}>
                     Default Chakra button variants remain unchanged.
@@ -426,7 +558,9 @@ const StyleGuide = memo(() => {
                     <SimpleGrid columns={{base: 2, md: 4}} spacing={4}>
                         {DEFAULT_BUTTON_VARIANTS.map((variant) => (
                             <VStack key={variant} layerStyle="cardOutline" p={4}>
-                                <Button variant={variant} colorScheme="blue">Button</Button>
+                                <Button variant={variant} colorScheme="blue">
+                                    Button
+                                </Button>
                                 <Text textStyle="small" color="gray.600">
                                     {variant}
                                 </Text>
@@ -460,7 +594,13 @@ const StyleGuide = memo(() => {
                     <Text textStyle="labelLarge" mb={4}>
                         Default Sizes
                     </Text>
-                    <HStack spacing={4} flexWrap="wrap" layerStyle="cardOutline" p={6} justify="center">
+                    <HStack
+                        spacing={4}
+                        flexWrap="wrap"
+                        layerStyle="cardOutline"
+                        p={6}
+                        justify="center"
+                    >
                         {DEFAULT_BUTTON_SIZES.map((size) => (
                             <VStack key={size}>
                                 <Button size={size} variant="brandPrimary">
@@ -479,7 +619,13 @@ const StyleGuide = memo(() => {
                     <Text textStyle="labelLarge" mb={4}>
                         Custom Sizes (New)
                     </Text>
-                    <HStack spacing={4} flexWrap="wrap" layerStyle="cardOutline" p={6} justify="center">
+                    <HStack
+                        spacing={4}
+                        flexWrap="wrap"
+                        layerStyle="cardOutline"
+                        p={6}
+                        justify="center"
+                    >
                         {CUSTOM_BUTTON_SIZES.map((size) => (
                             <VStack key={size}>
                                 <Button size={size} variant="brandPrimary">
@@ -580,7 +726,10 @@ const StyleGuide = memo(() => {
             {/* ============================================ */}
             <Box id="layouts" mb={16}>
                 <Heading textStyle="displayMedium" mb={6}>
-                    Page Layouts <Badge colorScheme="blue" ml={2}>Opt-In</Badge>
+                    Page Layouts{' '}
+                    <Badge colorScheme="blue" ml={2}>
+                        Opt-In
+                    </Badge>
                 </Heading>
                 <Text textStyle="base" color="gray.600" mb={4}>
                     Reusable layout patterns. Apply via <code>layerStyle</code> prop.
@@ -592,22 +741,34 @@ const StyleGuide = memo(() => {
                 <VStack spacing={6} align="stretch">
                     {/* Page widths */}
                     <Box layerStyle="cardOutline">
-                        <Text textStyle="labelMedium" mb={4}>Page Container Widths</Text>
+                        <Text textStyle="labelMedium" mb={4}>
+                            Page Container Widths
+                        </Text>
                         <VStack spacing={4} align="stretch">
                             <Box bg="brand.100" p={4} borderRadius="md">
-                                <Text textStyle="small" fontWeight="bold">layerStyle="pageNarrow"</Text>
-                                <Text textStyle="extraSmall">max-width: 768px (articles, forms)</Text>
+                                <Text textStyle="small" fontWeight="bold">
+                                    layerStyle="pageNarrow"
+                                </Text>
+                                <Text textStyle="extraSmall">
+                                    max-width: 768px (articles, forms)
+                                </Text>
                             </Box>
                             <Box bg="brand.200" p={4} borderRadius="md">
-                                <Text textStyle="small" fontWeight="bold">layerStyle="page"</Text>
+                                <Text textStyle="small" fontWeight="bold">
+                                    layerStyle="page"
+                                </Text>
                                 <Text textStyle="extraSmall">max-width: 1440px (default)</Text>
                             </Box>
                             <Box bg="brand.300" p={4} borderRadius="md">
-                                <Text textStyle="small" fontWeight="bold">layerStyle="pageWide"</Text>
+                                <Text textStyle="small" fontWeight="bold">
+                                    layerStyle="pageWide"
+                                </Text>
                                 <Text textStyle="extraSmall">max-width: 1920px (wide content)</Text>
                             </Box>
                             <Box bg="brand.400" p={4} borderRadius="md">
-                                <Text textStyle="small" fontWeight="bold">layerStyle="pageFullBleed"</Text>
+                                <Text textStyle="small" fontWeight="bold">
+                                    layerStyle="pageFullBleed"
+                                </Text>
                                 <Text textStyle="extraSmall">width: 100% (edge to edge)</Text>
                             </Box>
                         </VStack>
@@ -615,33 +776,61 @@ const StyleGuide = memo(() => {
 
                     {/* Grid Layouts */}
                     <Box layerStyle="cardOutline">
-                        <Text textStyle="labelMedium" mb={4}>Grid Layouts</Text>
-                        
-                        <Text textStyle="small" fontWeight="bold" mb={2}>contentTwoCol</Text>
+                        <Text textStyle="labelMedium" mb={4}>
+                            Grid Layouts
+                        </Text>
+
+                        <Text textStyle="small" fontWeight="bold" mb={2}>
+                            contentTwoCol
+                        </Text>
                         <Box layerStyle="contentTwoCol" mb={6}>
-                            <Box bg="secondary.100" p={4} borderRadius="md" textAlign="center">Column 1</Box>
-                            <Box bg="secondary.100" p={4} borderRadius="md" textAlign="center">Column 2</Box>
+                            <Box bg="secondary.100" p={4} borderRadius="md" textAlign="center">
+                                Column 1
+                            </Box>
+                            <Box bg="secondary.100" p={4} borderRadius="md" textAlign="center">
+                                Column 2
+                            </Box>
                         </Box>
 
-                        <Text textStyle="small" fontWeight="bold" mb={2}>contentThreeCol</Text>
+                        <Text textStyle="small" fontWeight="bold" mb={2}>
+                            contentThreeCol
+                        </Text>
                         <Box layerStyle="contentThreeCol" mb={6}>
-                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">Col 1</Box>
-                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">Col 2</Box>
-                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">Col 3</Box>
+                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">
+                                Col 1
+                            </Box>
+                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">
+                                Col 2
+                            </Box>
+                            <Box bg="success.100" p={4} borderRadius="md" textAlign="center">
+                                Col 3
+                            </Box>
                         </Box>
 
-                        <Text textStyle="small" fontWeight="bold" mb={2}>contentFourCol</Text>
+                        <Text textStyle="small" fontWeight="bold" mb={2}>
+                            contentFourCol
+                        </Text>
                         <Box layerStyle="contentFourCol">
-                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">1</Box>
-                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">2</Box>
-                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">3</Box>
-                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">4</Box>
+                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">
+                                1
+                            </Box>
+                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">
+                                2
+                            </Box>
+                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">
+                                3
+                            </Box>
+                            <Box bg="warning.100" p={4} borderRadius="md" textAlign="center">
+                                4
+                            </Box>
                         </Box>
                     </Box>
 
                     {/* Section Styles */}
                     <Box layerStyle="cardOutline">
-                        <Text textStyle="labelMedium" mb={4}>Section Styles</Text>
+                        <Text textStyle="labelMedium" mb={4}>
+                            Section Styles
+                        </Text>
                         <VStack spacing={4} align="stretch">
                             <Box layerStyle="section" bg="neutral.50" borderRadius="md">
                                 <Text textAlign="center">layerStyle="section"</Text>
@@ -661,7 +850,10 @@ const StyleGuide = memo(() => {
             {/* ============================================ */}
             <Box id="cards" mb={16}>
                 <Heading textStyle="displayMedium" mb={6}>
-                    Cards <Badge colorScheme="blue" ml={2}>Opt-In</Badge>
+                    Cards{' '}
+                    <Badge colorScheme="blue" ml={2}>
+                        Opt-In
+                    </Badge>
                 </Heading>
                 <Text textStyle="base" color="gray.600" mb={4}>
                     Pre-styled card patterns. Apply via <code>layerStyle</code> prop.
@@ -672,25 +864,33 @@ const StyleGuide = memo(() => {
 
                 <SimpleGrid columns={{base: 1, md: 2, lg: 4}} spacing={6}>
                     <Box layerStyle="card">
-                        <Text fontWeight="bold" mb={2}>card</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            card
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             Basic card with shadow
                         </Text>
                     </Box>
                     <Box layerStyle="cardHover">
-                        <Text fontWeight="bold" mb={2}>cardHover</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            cardHover
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             Hover to see effect
                         </Text>
                     </Box>
                     <Box layerStyle="cardOutline">
-                        <Text fontWeight="bold" mb={2}>cardOutline</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            cardOutline
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             Bordered card
                         </Text>
                     </Box>
                     <Box layerStyle="cardFlat">
-                        <Text fontWeight="bold" mb={2}>cardFlat</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            cardFlat
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             No shadow, colored bg
                         </Text>
@@ -700,25 +900,33 @@ const StyleGuide = memo(() => {
                 {/* Special Cards */}
                 <SimpleGrid columns={{base: 1, md: 2}} spacing={6} mt={6}>
                     <Box layerStyle="glass" bg="brand.500" position="relative" overflow="hidden">
-                        <Text fontWeight="bold" color="white" mb={2}>glass</Text>
+                        <Text fontWeight="bold" color="white" mb={2}>
+                            glass
+                        </Text>
                         <Text textStyle="small" color="whiteAlpha.800">
                             Glassmorphism effect
                         </Text>
                     </Box>
                     <Box layerStyle="gradientPrimary">
-                        <Text fontWeight="bold" mb={2}>gradientPrimary</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            gradientPrimary
+                        </Text>
                         <Text textStyle="small" opacity={0.9}>
                             Gradient background
                         </Text>
                     </Box>
                     <Box layerStyle="banner">
-                        <Text fontWeight="bold" mb={2}>banner</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            banner
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             Alert or announcement banner
                         </Text>
                     </Box>
                     <Box layerStyle="feature">
-                        <Text fontWeight="bold" mb={2}>feature</Text>
+                        <Text fontWeight="bold" mb={2}>
+                            feature
+                        </Text>
                         <Text textStyle="small" color="gray.600">
                             Feature highlight card
                         </Text>
@@ -776,12 +984,14 @@ const StyleGuide = memo(() => {
                         <Box layerStyle="brandListItem" borderBottom="1px" borderColor="gray.200">
                             Regular list item (hover me)
                         </Box>
-                        <Box layerStyle="brandListItemSelected" borderBottom="1px" borderColor="gray.200">
+                        <Box
+                            layerStyle="brandListItemSelected"
+                            borderBottom="1px"
+                            borderColor="gray.200"
+                        >
                             Selected list item
                         </Box>
-                        <Box layerStyle="brandListItem">
-                            Another list item
-                        </Box>
+                        <Box layerStyle="brandListItem">Another list item</Box>
                     </Box>
                 </Box>
 
@@ -791,12 +1001,16 @@ const StyleGuide = memo(() => {
                         Input Style (Opt-In)
                     </Text>
                     <Text textStyle="small" color="gray.600" mb={4}>
-                        Usage: <code>{`<Input sx={layerStyles.brandInput} />`}</code> or apply via custom Input component
+                        Usage: <code>{`<Input sx={layerStyles.brandInput} />`}</code> or apply via
+                        custom Input component
                     </Text>
                     <Box layerStyle="cardOutline" p={6}>
-                        <Text textStyle="small" mb={2}>brandInput provides: hover, focus, and invalid states</Text>
+                        <Text textStyle="small" mb={2}>
+                            brandInput provides: hover, focus, and invalid states
+                        </Text>
                         <Text textStyle="extraSmall" color="gray.500">
-                            border → gray.300 | hover → gray.400 | focus → brand.500 ring | invalid → error.500 ring
+                            border → gray.300 | hover → gray.400 | focus → brand.500 ring | invalid
+                            → error.500 ring
                         </Text>
                     </Box>
                 </Box>
@@ -819,12 +1033,7 @@ const StyleGuide = memo(() => {
                     <HStack spacing={4} flexWrap="wrap">
                         {SPACING_VALUES.map((space) => (
                             <VStack key={space}>
-                                <Box
-                                    w={space}
-                                    h={space}
-                                    bg="brand.500"
-                                    borderRadius="sm"
-                                />
+                                <Box w={space} h={space} bg="brand.500" borderRadius="sm" />
                                 <Text textStyle="extraSmall">{space}</Text>
                                 <Text textStyle="extraSmall" color="gray.400">
                                     {space * 4}px
@@ -849,4 +1058,3 @@ const StyleGuide = memo(() => {
 StyleGuide.displayName = 'StyleGuide'
 
 export default StyleGuide
-

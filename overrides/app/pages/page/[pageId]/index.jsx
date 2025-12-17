@@ -8,7 +8,15 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 import {usePage} from '@salesforce/commerce-sdk-react'
-import {Box, Spinner, Center, Alert, AlertIcon, AlertTitle, AlertDescription} from '@chakra-ui/react'
+import {
+    Box,
+    Spinner,
+    Center,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription
+} from '@chakra-ui/react'
 import {PageRenderer} from '../../experience/core'
 
 /**

@@ -373,4 +373,3 @@ export const useAuthModal = (initialView = LOGIN_VIEW) => {
         idps: social?.idps
     }
 }
-

@@ -11,4 +11,3 @@ export {PageRenderer, Region, ComponentRenderer} from './core'
 // Registries for extending with custom pages and components
 export {pageRegistry} from './pages'
 export {componentRegistry} from './components'
-

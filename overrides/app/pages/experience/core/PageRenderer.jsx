@@ -15,7 +15,7 @@ import {pageRegistry} from '../pages'
 /**
  * PageRenderer - Dynamically renders page types from experience/pages
  * Based on the page's typeId, it loads the corresponding page component
- * 
+ *
  * Performance: Memoized to prevent unnecessary re-renders
  */
 const PageRenderer = memo(({page}) => {

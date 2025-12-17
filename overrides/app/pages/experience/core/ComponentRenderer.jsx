@@ -15,11 +15,11 @@ import Region from './Region'
 
 /**
  * ComponentRenderer - Dynamically renders components based on typeId
- * 
+ *
  * typeId format: "folder.componentName"
- * Example: "commerce_assets.imageAndText" 
+ * Example: "commerce_assets.imageAndText"
  *   -> looks for component in experience/components/commerce_assets/imageAndText
- * 
+ *
  * Performance: Memoized with useCallback for renderRegions
  */
 const ComponentRenderer = memo(({component}) => {
