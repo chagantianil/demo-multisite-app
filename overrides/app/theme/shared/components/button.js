@@ -7,46 +7,51 @@
 
 /**
  * Button Component Styles - Custom Variants Only
- * 
+ *
  * These variants are ADDED to the existing Chakra button variants.
  * Default buttons (solid, outline, ghost, link) remain unchanged.
- * 
+ *
  * Custom Variants Usage:
  * <Button variant="brandPrimary">Primary CTA</Button>
  * <Button variant="brandSecondary">Secondary</Button>
  * <Button variant="brandOutline">Outlined</Button>
  * <Button variant="brandGhost">Ghost</Button>
  * <Button variant="brandDanger">Delete</Button>
- * 
+ *
  * Custom Sizes Usage:
  * <Button size="xs2">Extra Small</Button>
  * <Button size="xl2">Extra Large</Button>
  */
 
 const Button = {
+    // Set default colorScheme to 'brand' (orange) for all buttons
+    defaultProps: {
+        colorScheme: 'brand'
+    },
+
     // Custom size variations (added to existing xs, sm, md, lg)
     sizes: {
         // Extra extra small
         xs2: {
-            fontSize: '0.625rem',   // 10px
-            px: 2,                  // 8px
-            py: 0.5,                // 2px
+            fontSize: '0.625rem', // 10px
+            px: 2, // 8px
+            py: 0.5, // 2px
             height: '24px',
             minWidth: '50px'
         },
         // Extra large
         xl: {
-            fontSize: '1.125rem',   // 18px
-            px: 6,                  // 24px
-            py: 2.5,                // 10px
+            fontSize: '1.125rem', // 18px
+            px: 6, // 24px
+            py: 2.5, // 10px
             height: '48px',
             minWidth: '120px'
         },
         // Extra extra large
         xl2: {
-            fontSize: '1.25rem',    // 20px
-            px: 8,                  // 32px
-            py: 3,                  // 12px
+            fontSize: '1.25rem', // 20px
+            px: 8, // 32px
+            py: 3, // 12px
             height: '56px',
             minWidth: '140px'
         }
@@ -55,10 +60,38 @@ const Button = {
     // Custom variant styles (ADDED to existing solid, outline, ghost, link)
     variants: {
         // ============================================
+        // Override default solid variant to use orange
+        // ============================================
+        solid: (props) => {
+            const {colorScheme = 'brand'} = props
+            // Use brand color (orange) as default, but allow other colorSchemes
+            const bgColor = colorScheme === 'brand' ? 'brand.500' : `${colorScheme}.500`
+            const hoverColor = colorScheme === 'brand' ? 'brand.600' : `${colorScheme}.600`
+            const activeColor = colorScheme === 'brand' ? 'brand.700' : `${colorScheme}.700`
+
+            return {
+                bg: bgColor,
+                color: 'white',
+                _hover: {
+                    bg: hoverColor,
+                    _disabled: {
+                        bg: bgColor
+                    }
+                },
+                _active: {
+                    bg: activeColor
+                },
+                _disabled: {
+                    opacity: 0.5,
+                    cursor: 'not-allowed'
+                }
+            }
+        },
+        // ============================================
         // Brand Primary - Main CTA button
         // ============================================
         brandPrimary: {
-            bg: 'brand.500',
+            bg: 'brand.500', // Orange background
             color: 'white',
             fontWeight: 'semibold',
             borderRadius: 'md',

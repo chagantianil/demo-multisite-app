@@ -6,29 +6,24 @@
  */
 
 /**
- * Global Color Palette
- * 
- * Usage in components:
- * - color="brand.500"
- * - bg="primary.100"
- * - borderColor="neutral.300"
- * 
- * TODO: Replace these placeholder values with your design team's colors
+ * my-store Site Color Palette
+ *
+ * Orange brand colors for my-store site
  */
 
 const colors = {
-    // Primary Brand Colors
+    // Primary Brand Colors - Orange for my-store
     brand: {
-        50: '#E6F0FF',
-        100: '#CCE0FF',
-        200: '#99C2FF',
-        300: '#66A3FF',
-        400: '#3385FF',
-        500: '#0066FF',  // Primary brand color
-        600: '#0052CC',
-        700: '#003D99',
-        800: '#002966',
-        900: '#001433'
+        50: '#FFF4E6',
+        100: '#FFE8CC',
+        200: '#FFD199',
+        300: '#FFBA66',
+        400: '#FFA333',
+        500: '#FF8C00', // Primary brand color - Orange
+        600: '#CC7000',
+        700: '#995400',
+        800: '#663800',
+        900: '#331C00'
     },
 
     // Secondary Colors
@@ -38,7 +33,7 @@ const colors = {
         200: '#FFD699',
         300: '#FFC266',
         400: '#FFAD33',
-        500: '#FF9900',  // Secondary color
+        500: '#FF9900', // Secondary color
         600: '#CC7A00',
         700: '#995C00',
         800: '#663D00',
@@ -139,4 +134,3 @@ const colors = {
 }
 
 export default colors
-

@@ -7,9 +7,9 @@
 
 /**
  * Custom Fonts Configuration
- * 
+ *
  * Font files should be placed in: overrides/app/static/fonts/
- * 
+ *
  * Font weight mapping:
  * - 100: Thin
  * - 200: Extra Light
@@ -44,17 +44,17 @@ export const fontWeights = {
 
 // Font sizes
 export const fontSizes = {
-    '2xs': '0.625rem',   // 10px
-    xs: '0.75rem',       // 12px
-    sm: '0.875rem',      // 14px
-    md: '1rem',          // 16px
-    lg: '1.125rem',      // 18px
-    xl: '1.25rem',       // 20px
-    '2xl': '1.5rem',     // 24px
-    '3xl': '1.875rem',   // 30px
-    '4xl': '2.25rem',    // 36px
-    '5xl': '3rem',       // 48px
-    '6xl': '3.75rem'     // 60px
+    '2xs': '0.625rem', // 10px
+    xs: '0.75rem', // 12px
+    sm: '0.875rem', // 14px
+    md: '1rem', // 16px
+    lg: '1.125rem', // 18px
+    xl: '1.25rem', // 20px
+    '2xl': '1.5rem', // 24px
+    '3xl': '1.875rem', // 30px
+    '4xl': '2.25rem', // 36px
+    '5xl': '3rem', // 48px
+    '6xl': '3.75rem' // 60px
 }
 
 // Line heights
@@ -68,4 +68,3 @@ export const lineHeights = {
 }
 
 export default {fonts, fontWeights, fontSizes, lineHeights}
-

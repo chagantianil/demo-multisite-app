@@ -7,20 +7,20 @@
 
 /**
  * Text Style Variants - All Opt-In
- * 
+ *
  * These styles do NOT override defaults. Use them explicitly:
- * 
+ *
  * Body Text:
  *   <Text textStyle="extraSmall">Small text</Text>
  *   <Text textStyle="large">Large text</Text>
- * 
+ *
  * Brand Headings:
  *   <Heading textStyle="brandH1">Heading 1</Heading>
  *   <Heading textStyle="brandH2">Heading 2</Heading>
- * 
+ *
  * Brand Links:
  *   <Link textStyle="brandLink">Click here</Link>
- * 
+ *
  * Display:
  *   <Text textStyle="displayLarge">Big Display Text</Text>
  */
@@ -30,38 +30,38 @@ const textStyles = {
     // Body Text Variants
     // ============================================
     extraSmall: {
-        fontSize: '0.625rem',    // 10px
-        lineHeight: '1rem',      // 16px
+        fontSize: '0.625rem', // 10px
+        lineHeight: '1rem', // 16px
         fontWeight: 'normal',
         letterSpacing: '0.01em'
     },
     small: {
-        fontSize: '0.75rem',     // 12px
-        lineHeight: '1.125rem',  // 18px
+        fontSize: '0.75rem', // 12px
+        lineHeight: '1.125rem', // 18px
         fontWeight: 'normal',
         letterSpacing: '0.01em'
     },
     medium: {
-        fontSize: '0.875rem',    // 14px
-        lineHeight: '1.25rem',   // 20px
+        fontSize: '0.875rem', // 14px
+        lineHeight: '1.25rem', // 20px
         fontWeight: 'normal',
         letterSpacing: '0'
     },
     base: {
-        fontSize: '1rem',        // 16px
-        lineHeight: '1.5rem',    // 24px
+        fontSize: '1rem', // 16px
+        lineHeight: '1.5rem', // 24px
         fontWeight: 'normal',
         letterSpacing: '0'
     },
     large: {
-        fontSize: '1.125rem',    // 18px
-        lineHeight: '1.75rem',   // 28px
+        fontSize: '1.125rem', // 18px
+        lineHeight: '1.75rem', // 28px
         fontWeight: 'normal',
         letterSpacing: '-0.01em'
     },
     extraLarge: {
-        fontSize: '1.25rem',     // 20px
-        lineHeight: '1.875rem',  // 30px
+        fontSize: '1.25rem', // 20px
+        lineHeight: '1.875rem', // 30px
         fontWeight: 'normal',
         letterSpacing: '-0.01em'
     },
@@ -114,26 +114,26 @@ const textStyles = {
     // Display/Heading Variants
     // ============================================
     displaySmall: {
-        fontSize: '1.5rem',      // 24px
-        lineHeight: '2rem',      // 32px
+        fontSize: '1.5rem', // 24px
+        lineHeight: '2rem', // 32px
         fontWeight: 'bold',
         letterSpacing: '-0.02em'
     },
     displayMedium: {
-        fontSize: '2rem',        // 32px
-        lineHeight: '2.5rem',    // 40px
+        fontSize: '2rem', // 32px
+        lineHeight: '2.5rem', // 40px
         fontWeight: 'bold',
         letterSpacing: '-0.02em'
     },
     displayLarge: {
-        fontSize: '2.5rem',      // 40px
-        lineHeight: '3rem',      // 48px
+        fontSize: '2.5rem', // 40px
+        lineHeight: '3rem', // 48px
         fontWeight: 'bold',
         letterSpacing: '-0.02em'
     },
     displayExtraLarge: {
-        fontSize: '3rem',        // 48px
-        lineHeight: '3.5rem',    // 56px
+        fontSize: '3rem', // 48px
+        lineHeight: '3.5rem', // 56px
         fontWeight: 'bold',
         letterSpacing: '-0.02em'
     },
@@ -142,21 +142,21 @@ const textStyles = {
     // Label Variants
     // ============================================
     labelSmall: {
-        fontSize: '0.625rem',    // 10px
+        fontSize: '0.625rem', // 10px
         lineHeight: '1rem',
         fontWeight: 'medium',
         letterSpacing: '0.05em',
         textTransform: 'uppercase'
     },
     labelMedium: {
-        fontSize: '0.75rem',     // 12px
+        fontSize: '0.75rem', // 12px
         lineHeight: '1.125rem',
         fontWeight: 'medium',
         letterSpacing: '0.05em',
         textTransform: 'uppercase'
     },
     labelLarge: {
-        fontSize: '0.875rem',    // 14px
+        fontSize: '0.875rem', // 14px
         lineHeight: '1.25rem',
         fontWeight: 'medium',
         letterSpacing: '0.05em',
@@ -189,7 +189,7 @@ const textStyles = {
     // Caption/Helper Text
     // ============================================
     caption: {
-        fontSize: '0.75rem',     // 12px
+        fontSize: '0.75rem', // 12px
         lineHeight: '1rem',
         fontWeight: 'normal',
         color: 'gray.500'

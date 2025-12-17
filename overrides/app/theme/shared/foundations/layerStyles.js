@@ -7,7 +7,7 @@
 
 /**
  * Layer Styles - Reusable style presets for containers and layouts
- * 
+ *
  * Usage:
  * <Box layerStyle="page">Page content</Box>
  * <Box layerStyle="card">Card content</Box>
@@ -17,7 +17,7 @@ const layerStyles = {
     // ============================================
     // Page Layout Styles
     // ============================================
-    
+
     // Main page container
     page: {
         maxWidth: '1440px',
@@ -348,4 +348,3 @@ const layerStyles = {
 }
 
 export default layerStyles
-

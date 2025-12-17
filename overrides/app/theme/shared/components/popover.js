@@ -10,7 +10,7 @@ import basePopover from '@salesforce/retail-react-app/app/theme/components/base/
 
 /**
  * Custom Popover Theme Override
- * 
+ *
  * Extends retail-react-app Popover styles with custom overrides
  */
 const Popover = {
@@ -37,4 +37,3 @@ const Popover = {
 }
 
 export default Popover
-

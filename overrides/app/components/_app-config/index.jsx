@@ -12,7 +12,7 @@ import {ChakraProvider} from '@salesforce/retail-react-app/app/components/shared
 import 'focus-visible/dist/focus-visible'
 
 // Use custom theme with our colors, text styles, and components
-import theme from '../../theme'
+import {createTheme} from '../../theme'
 import {MultiSiteProvider, StoreLocatorProvider} from '@salesforce/retail-react-app/app/contexts'
 import {
     resolveSiteFromUrl,
@@ -108,7 +108,7 @@ const AppConfig = ({children, locals = {}}) => {
         >
             <MultiSiteProvider site={locals.site} locale={locals.locale} buildUrl={locals.buildUrl}>
                 <StoreLocatorProvider config={storeLocatorConfig}>
-                    <ChakraProvider theme={theme}>{children}</ChakraProvider>
+                    <ChakraProvider theme={createTheme(locals.site?.id)}>{children}</ChakraProvider>
                 </StoreLocatorProvider>
             </MultiSiteProvider>
             <ReactQueryDevtools />
