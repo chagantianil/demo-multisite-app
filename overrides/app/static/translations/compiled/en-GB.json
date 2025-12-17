@@ -3513,6 +3513,18 @@
       "value": "Full Name"
     }
   ],
+  "profile_card.label.marketing_consent": [
+    {
+      "type": 0,
+      "value": "I agree to receive marketing communications"
+    }
+  ],
+  "profile_card.label.marketing_consent_title": [
+    {
+      "type": 0,
+      "value": "Marketing Consent"
+    }
+  ],
   "profile_card.label.phone": [
     {
       "type": 0,
@@ -3523,6 +3535,18 @@
     {
       "type": 0,
       "value": "Not provided"
+    }
+  ],
+  "profile_card.message.opted_in": [
+    {
+      "type": 0,
+      "value": "Opted In"
+    }
+  ],
+  "profile_card.message.opted_out": [
+    {
+      "type": 0,
+      "value": "Opted Out"
     }
   ],
   "profile_card.title.my_profile": [

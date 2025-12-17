@@ -3513,24 +3513,6 @@
       "value": "Full Name"
     }
   ],
-  "profile_card.label.phone": [
-    {
-      "type": 0,
-      "value": "Phone Number"
-    }
-  ],
-  "profile_card.message.not_provided": [
-    {
-      "type": 0,
-      "value": "Not provided"
-    }
-  ],
-  "profile_card.title.my_profile": [
-    {
-      "type": 0,
-      "value": "My Profile"
-    }
-  ],
   "profile_card.label.marketing_consent": [
     {
       "type": 0,
@@ -3543,6 +3525,18 @@
       "value": "Marketing Consent"
     }
   ],
+  "profile_card.label.phone": [
+    {
+      "type": 0,
+      "value": "Phone Number"
+    }
+  ],
+  "profile_card.message.not_provided": [
+    {
+      "type": 0,
+      "value": "Not provided"
+    }
+  ],
   "profile_card.message.opted_in": [
     {
       "type": 0,
@@ -3553,6 +3547,12 @@
     {
       "type": 0,
       "value": "Opted Out"
+    }
+  ],
+  "profile_card.title.my_profile": [
+    {
+      "type": 0,
+      "value": "My Profile"
     }
   ],
   "profile_fields.label.profile_form": [

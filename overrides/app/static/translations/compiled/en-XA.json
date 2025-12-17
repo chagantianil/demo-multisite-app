@@ -7401,6 +7401,34 @@
       "value": "]"
     }
   ],
+  "profile_card.label.marketing_consent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ȧȧɠřḗḗḗḗ ŧǿǿ řḗḗƈḗḗīṽḗḗ ḿȧȧřķḗḗŧīƞɠ ƈǿǿḿḿŭŭƞīƈȧȧŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "profile_card.label.marketing_consent_title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧřķḗḗŧīƞɠ Ƈǿǿƞşḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "profile_card.label.phone": [
     {
       "type": 0,
@@ -7423,6 +7451,34 @@
     {
       "type": 0,
       "value": "Ƞǿǿŧ ƥřǿǿṽīḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "profile_card.message.opted_in": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥŧḗḗḓ Īƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "profile_card.message.opted_out": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥŧḗḗḓ Ǿŭŭŧ"
     },
     {
       "type": 0,

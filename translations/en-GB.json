@@ -1471,11 +1471,23 @@
   "profile_card.label.full_name": {
     "defaultMessage": "Full Name"
   },
+  "profile_card.label.marketing_consent": {
+    "defaultMessage": "I agree to receive marketing communications"
+  },
+  "profile_card.label.marketing_consent_title": {
+    "defaultMessage": "Marketing Consent"
+  },
   "profile_card.label.phone": {
     "defaultMessage": "Phone Number"
   },
   "profile_card.message.not_provided": {
     "defaultMessage": "Not provided"
+  },
+  "profile_card.message.opted_in": {
+    "defaultMessage": "Opted In"
+  },
+  "profile_card.message.opted_out": {
+    "defaultMessage": "Opted Out"
   },
   "profile_card.title.my_profile": {
     "defaultMessage": "My Profile"

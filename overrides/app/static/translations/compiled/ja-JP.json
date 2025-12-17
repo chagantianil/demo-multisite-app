@@ -3035,24 +3035,6 @@
       "value": "氏名"
     }
   ],
-  "profile_card.label.phone": [
-    {
-      "type": 0,
-      "value": "電話番号"
-    }
-  ],
-  "profile_card.message.not_provided": [
-    {
-      "type": 0,
-      "value": "指定されていません"
-    }
-  ],
-  "profile_card.title.my_profile": [
-    {
-      "type": 0,
-      "value": "マイプロフィール"
-    }
-  ],
   "profile_card.label.marketing_consent": [
     {
       "type": 0,
@@ -3065,6 +3047,18 @@
       "value": "マーケティング同意"
     }
   ],
+  "profile_card.label.phone": [
+    {
+      "type": 0,
+      "value": "電話番号"
+    }
+  ],
+  "profile_card.message.not_provided": [
+    {
+      "type": 0,
+      "value": "指定されていません"
+    }
+  ],
   "profile_card.message.opted_in": [
     {
       "type": 0,
@@ -3075,6 +3069,12 @@
     {
       "type": 0,
       "value": "未同意"
+    }
+  ],
+  "profile_card.title.my_profile": [
+    {
+      "type": 0,
+      "value": "マイプロフィール"
     }
   ],
   "profile_fields.label.profile_form": [
