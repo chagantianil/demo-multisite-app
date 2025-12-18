@@ -16,7 +16,7 @@ import {SimpleGrid, Box} from '@chakra-ui/react'
  *
  * Performance: Memoized to prevent unnecessary re-renders
  */
-const MobileGrid2r2c = memo(({data, regions = [], renderRegions, id}) => {
+const MobileGrid2r2c = memo(({regions = [], renderRegions, id}) => {
     return (
         <Box className="mobile-grid-2r2c" data-component-id={id} my={4}>
             <SimpleGrid columns={{base: 1, sm: 2, md: 4}} spacing={4}>
@@ -29,7 +29,6 @@ const MobileGrid2r2c = memo(({data, regions = [], renderRegions, id}) => {
 MobileGrid2r2c.displayName = 'MobileGrid2r2c'
 
 MobileGrid2r2c.propTypes = {
-    data: PropTypes.object,
     regions: PropTypes.array,
     renderRegions: PropTypes.func,
     id: PropTypes.string

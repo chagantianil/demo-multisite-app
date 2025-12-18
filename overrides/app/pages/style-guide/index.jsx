@@ -236,7 +236,8 @@ const StyleGuide = memo(() => {
                     Colors
                 </Heading>
                 <Text textStyle="base" color="gray.600" mb={8}>
-                    Usage: <code>color="brand.500"</code> or <code>bg="neutral.100"</code>
+                    Usage: <code>color=&quot;brand.500&quot;</code> or{' '}
+                    <code>bg=&quot;neutral.100&quot;</code>
                 </Text>
 
                 {COLOR_PALETTES.map((palette) => (
@@ -321,7 +322,7 @@ const StyleGuide = memo(() => {
                         Body Text Styles
                     </Text>
                     <VStack align="stretch" spacing={4} layerStyle="cardOutline">
-                        {TEXT_STYLES.map(({name, label}) => (
+                        {TEXT_STYLES.map(({name}) => (
                             <HStack
                                 key={name}
                                 justify="space-between"
@@ -747,7 +748,7 @@ const StyleGuide = memo(() => {
                         <VStack spacing={4} align="stretch">
                             <Box bg="brand.100" p={4} borderRadius="md">
                                 <Text textStyle="small" fontWeight="bold">
-                                    layerStyle="pageNarrow"
+                                    layerStyle=&quot;pageNarrow&quot;
                                 </Text>
                                 <Text textStyle="extraSmall">
                                     max-width: 768px (articles, forms)
@@ -755,19 +756,19 @@ const StyleGuide = memo(() => {
                             </Box>
                             <Box bg="brand.200" p={4} borderRadius="md">
                                 <Text textStyle="small" fontWeight="bold">
-                                    layerStyle="page"
+                                    layerStyle=&quot;page&quot;
                                 </Text>
                                 <Text textStyle="extraSmall">max-width: 1440px (default)</Text>
                             </Box>
                             <Box bg="brand.300" p={4} borderRadius="md">
                                 <Text textStyle="small" fontWeight="bold">
-                                    layerStyle="pageWide"
+                                    layerStyle=&quot;pageWide&quot;
                                 </Text>
                                 <Text textStyle="extraSmall">max-width: 1920px (wide content)</Text>
                             </Box>
                             <Box bg="brand.400" p={4} borderRadius="md">
                                 <Text textStyle="small" fontWeight="bold">
-                                    layerStyle="pageFullBleed"
+                                    layerStyle=&quot;pageFullBleed&quot;
                                 </Text>
                                 <Text textStyle="extraSmall">width: 100% (edge to edge)</Text>
                             </Box>
@@ -833,10 +834,10 @@ const StyleGuide = memo(() => {
                         </Text>
                         <VStack spacing={4} align="stretch">
                             <Box layerStyle="section" bg="neutral.50" borderRadius="md">
-                                <Text textAlign="center">layerStyle="section"</Text>
+                                <Text textAlign="center">layerStyle=&quot;section&quot;</Text>
                             </Box>
                             <Box layerStyle="sectionAlt" borderRadius="md">
-                                <Text textAlign="center">layerStyle="sectionAlt"</Text>
+                                <Text textAlign="center">layerStyle=&quot;sectionAlt&quot;</Text>
                             </Box>
                         </VStack>
                     </Box>

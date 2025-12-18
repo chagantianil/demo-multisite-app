@@ -381,7 +381,9 @@ const App = (props) => {
                                                             }
                                                             itemsKey="categories"
                                                             itemsCountKey="onlineSubCategoriesCount"
-                                                            contentComponent={ListMenuContentWithData}
+                                                            contentComponent={
+                                                                ListMenuContentWithData
+                                                            }
                                                         />
                                                     </HideOnMobile>
                                                 </Header>

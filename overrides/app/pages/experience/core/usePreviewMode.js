@@ -17,4 +17,3 @@ export const usePreviewMode = () => {
     const searchParams = new URLSearchParams(location?.search || '')
     return searchParams.get('preview') === 'true'
 }
-

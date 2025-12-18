@@ -26,9 +26,8 @@ import {usePreviewMode} from './usePreviewMode'
 const ComponentRenderer = memo(({component}) => {
     const isPreview = usePreviewMode()
 
-    if (!component) return null
-
-    const {typeId, data = {}, regions = [], id} = component
+    // Extract component properties (with defaults for when component is null)
+    const {typeId, data = {}, regions = [], id} = component || {}
 
     // Build Page Designer attributes for preview mode (success case)
     const previewAttributes = useMemo(() => {
@@ -98,16 +97,13 @@ const ComponentRenderer = memo(({component}) => {
         ))
     }, [])
 
+    // Early return after all hooks
+    if (!component) return null
+
     if (!typeId) {
         const errorAttributes = buildErrorPreviewAttributes('Component missing typeId', 'WARNING')
         return (
-            <Alert
-                status="warning"
-                size="sm"
-                variant="left-accent"
-                my={2}
-                {...errorAttributes}
-            >
+            <Alert status="warning" size="sm" variant="left-accent" my={2} {...errorAttributes}>
                 <AlertIcon />
                 <AlertDescription>Component missing typeId</AlertDescription>
             </Alert>
@@ -123,13 +119,7 @@ const ComponentRenderer = memo(({component}) => {
             'ERROR'
         )
         return (
-            <Alert
-                status="error"
-                size="sm"
-                variant="left-accent"
-                my={2}
-                {...errorAttributes}
-            >
+            <Alert status="error" size="sm" variant="left-accent" my={2} {...errorAttributes}>
                 <AlertIcon />
                 <AlertDescription>
                     Invalid typeId format: <code>{typeId}</code>

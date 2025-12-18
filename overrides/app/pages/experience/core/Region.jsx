@@ -21,9 +21,8 @@ import {usePreviewMode} from './usePreviewMode'
 const Region = memo(({region, ...props}) => {
     const isPreview = usePreviewMode()
 
-    if (!region) return null
-
-    const {id, components = []} = region
+    // Extract region properties (with defaults for when region is null)
+    const {id, components = []} = region || {}
 
     // Build Page Designer attributes for preview mode (success case)
     const previewAttributes = useMemo(() => {
@@ -75,17 +74,14 @@ const Region = memo(({region, ...props}) => {
         [isPreview, id]
     )
 
+    // Early return after all hooks
+    if (!region) return null
+
     // Handle missing region id
     if (!id) {
         const errorAttributes = buildErrorPreviewAttributes('Region missing id', 'ERROR')
         return (
-            <Alert
-                status="error"
-                size="sm"
-                variant="left-accent"
-                my={2}
-                {...errorAttributes}
-            >
+            <Alert status="error" size="sm" variant="left-accent" my={2} {...errorAttributes}>
                 <AlertIcon />
                 <AlertDescription>Region missing id</AlertDescription>
             </Alert>
@@ -93,12 +89,7 @@ const Region = memo(({region, ...props}) => {
     }
 
     return (
-        <Box
-            id={id}
-            className={`region region-${id}`}
-            {...previewAttributes}
-            {...props}
-        >
+        <Box id={id} className={`region region-${id}`} {...previewAttributes} {...props}>
             {components.map((component, index) => (
                 <ComponentRenderer key={component.id || index} component={component} />
             ))}

@@ -16,7 +16,7 @@ import {Region} from '../../core'
  *
  * Performance: Memoized to prevent unnecessary re-renders
  */
-const StorePage = memo(({regions = [], data, id, name}) => {
+const StorePage = memo(({regions = [], id, name}) => {
     return (
         <Box className="store-page" data-page-id={id} data-page-name={name}>
             {regions.map((region, index) => (
@@ -30,7 +30,6 @@ StorePage.displayName = 'StorePage'
 
 StorePage.propTypes = {
     regions: PropTypes.array,
-    data: PropTypes.object,
     id: PropTypes.string,
     name: PropTypes.string
 }

@@ -13,14 +13,12 @@ import {
     SimpleGrid,
     useMultiStyleConfig,
     Select as ChakraSelect,
-    Heading,
     createStylesContext,
     FormControl
 } from '@salesforce/retail-react-app/app/components/shared/ui'
 import {useIntl} from 'react-intl'
 
 import LinksList from '@salesforce/retail-react-app/app/components/links-list'
-import SocialIcons from '@salesforce/retail-react-app/app/components/social-icons'
 import {HideOnDesktop, HideOnMobile} from '@salesforce/retail-react-app/app/components/responsive'
 import {getPathWithLocale} from '@salesforce/retail-react-app/app/utils/url'
 import LocaleText from '@salesforce/retail-react-app/app/components/locale-text'
@@ -32,7 +30,7 @@ import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 // Import the Newsletter component (local to footer)
 import NewsletterForm from './newsletter-form'
 
-const [StylesProvider, useStyles] = createStylesContext('Footer')
+const [StylesProvider] = createStylesContext('Footer')
 
 const Footer = memo(({...otherProps}) => {
     const styles = useMultiStyleConfig('Footer')

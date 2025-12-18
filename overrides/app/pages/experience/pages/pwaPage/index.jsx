@@ -16,7 +16,7 @@ import {Region} from '../../core'
  *
  * Performance: Memoized to prevent unnecessary re-renders
  */
-const pwaPage = memo(({regions = [], data, id, name}) => {
+const pwaPage = memo(({regions = [], id, name}) => {
     return (
         <Box className="pwa-page" data-page-id={id} data-page-name={name}>
             {regions.map((region, index) => (
@@ -30,7 +30,6 @@ pwaPage.displayName = 'pwaPage'
 
 pwaPage.propTypes = {
     regions: PropTypes.array,
-    data: PropTypes.object,
     id: PropTypes.string,
     name: PropTypes.string
 }

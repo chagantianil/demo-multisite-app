@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 
 export const NewsletterForm = () => {
-    const {organizationId, shortCode, siteId, locale} = useConfig()
+    const {organizationId, siteId, locale} = useConfig()
     const {getTokenWhenReady} = useAccessToken()
 
     const [submitStatus, setSubmitStatus] = useState(null)
