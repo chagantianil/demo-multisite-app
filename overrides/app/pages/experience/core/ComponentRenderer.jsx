@@ -5,13 +5,14 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import React, {memo, useCallback} from 'react'
+import React, {memo, useCallback, useMemo} from 'react'
 import PropTypes from 'prop-types'
 import {Box, Alert, AlertIcon, AlertTitle, AlertDescription} from '@chakra-ui/react'
 
 // Import component registry
 import {componentRegistry} from '../components'
 import Region from './Region'
+import {usePreviewMode} from './usePreviewMode'
 
 /**
  * ComponentRenderer - Dynamically renders components based on typeId
@@ -23,9 +24,40 @@ import Region from './Region'
  * Performance: Memoized with useCallback for renderRegions
  */
 const ComponentRenderer = memo(({component}) => {
+    const isPreview = usePreviewMode()
+
     if (!component) return null
 
     const {typeId, data = {}, regions = [], id} = component
+
+    // Build Page Designer attributes for preview mode
+    const previewAttributes = useMemo(() => {
+        if (!isPreview) return {}
+
+        // Convert typeId dots to hyphens for CSS class (e.g., "commerce_assets.imageAndText" -> "commerce_assets-imageAndText")
+        const hyphenTypeId = typeId ? typeId.replace(/\./g, '-') : ''
+
+        return {
+            className: `experience-component experience-${hyphenTypeId}`,
+            'data-sfcc-pd-component-info': JSON.stringify({
+                id: id,
+                render_state: 'SUCCESS',
+                render_info: {
+                    render_script_time: 0,
+                    render_time: 0,
+                    cache_expire_time: null
+                },
+                exception: null,
+                type: typeId,
+                name: null,
+                localized: true
+            }),
+            'data-allow-select': 'true',
+            'data-allow-move': 'true',
+            'data-allow-delete': 'true',
+            'data-item-id': `component|${id}`
+        }
+    }, [isPreview, id, typeId])
 
     // Memoized renderRegions function
     const renderRegions = useCallback((nestedRegions) => {
@@ -82,13 +114,15 @@ const ComponentRenderer = memo(({component}) => {
     }
 
     return (
-        <DynamicComponent
-            data={data}
-            regions={regions}
-            renderRegions={renderRegions}
-            id={id}
-            typeId={typeId}
-        />
+        <Box {...previewAttributes}>
+            <DynamicComponent
+                data={data}
+                regions={regions}
+                renderRegions={renderRegions}
+                id={id}
+                typeId={typeId}
+            />
+        </Box>
     )
 })
 

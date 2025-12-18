@@ -8,3 +8,4 @@
 export {default as PageRenderer} from './PageRenderer'
 export {default as Region} from './Region'
 export {default as ComponentRenderer} from './ComponentRenderer'
+export {usePreviewMode} from './usePreviewMode'

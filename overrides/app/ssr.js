@@ -333,6 +333,51 @@ export async function jwksCaching(req, res, options) {
 const {handler} = runtime.createHandler(options, (app) => {
     app.use(express.json()) // To parse JSON payloads
     app.use(express.urlencoded({extended: true}))
+
+    // Enable CORS for partner site AJAX requests (must be before defaultPwaKitSecurityHeaders)
+    app.use((req, res, next) => {
+        const origin = req.headers.origin
+        const allowedOrigins = [
+            'https://zzap-249.dx.commercecloud.salesforce.com',
+            'https://*.commercecloud.salesforce.com',
+            'https://*.dx.commercecloud.salesforce.com'
+        ]
+
+        // Check if origin matches allowed patterns
+        const isAllowed = allowedOrigins.some((allowedOrigin) => {
+            if (!origin) return false
+            if (allowedOrigin.includes('*')) {
+                // Convert wildcard pattern to regex
+                // e.g., https://*.commercecloud.salesforce.com -> https://.*\.commercecloud\.salesforce\.com
+                // e.g., https://*.dx.commercecloud.salesforce.com -> https://.*\.dx\.commercecloud\.salesforce\.com
+                // First escape special regex chars (but not *), then replace * with .*
+                const escaped = allowedOrigin.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
+                const pattern = escaped.replace(/\*/g, '.*')
+                return new RegExp(`^${pattern}$`).test(origin)
+            }
+            return origin === allowedOrigin
+        })
+
+        if (isAllowed) {
+            res.setHeader('Access-Control-Allow-Origin', origin)
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD')
+            res.setHeader(
+                'Access-Control-Allow-Headers',
+                'Content-Type, Authorization, X-Requested-With, Accept, Origin, X-CSRF-Token'
+            )
+            res.setHeader('Access-Control-Allow-Credentials', 'true')
+            res.setHeader('Access-Control-Expose-Headers', 'Content-Length, Content-Type')
+            res.setHeader('Access-Control-Max-Age', '86400') // 24 hours
+        }
+
+        // Handle preflight requests
+        if (req.method === 'OPTIONS') {
+            return res.status(200).end()
+        }
+
+        next()
+    })
+
     // Set default HTTP security headers required by PWA Kit
     app.use(defaultPwaKitSecurityHeaders)
     // Set custom HTTP security headers
@@ -346,7 +391,10 @@ const {handler} = runtime.createHandler(options, (app) => {
             ],
             'script-src': [
                 // Used by the service worker in /worker/main.js
-                'storage.googleapis.com'
+                'storage.googleapis.com',
+                // Allow Salesforce Commerce Cloud Experience Builder scripts in preview mode
+                'https://*.commercecloud.salesforce.com',
+                'https://*.dx.commercecloud.salesforce.com'
             ],
             'connect-src': [
                 // Connect to Einstein APIs
@@ -354,11 +402,10 @@ const {handler} = runtime.createHandler(options, (app) => {
                 // Connect to DataCloud APIs
                 '*.c360a.salesforce.com',
                 // Connect to SCRT2 URLs
-                '*.salesforce-scrt.com'
-            ],
-            'frame-src': [
-                // Allow frames from Salesforce site.com (Needed for MIAW)
-                '*.site.com'
+                '*.salesforce-scrt.com',
+                // Allow AJAX requests from partner site
+                'https://*.commercecloud.salesforce.com',
+                'https://*.dx.commercecloud.salesforce.com'
             ]
         }
     }

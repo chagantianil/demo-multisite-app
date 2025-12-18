@@ -24,7 +24,9 @@
  */
 
 import StorePage from './storePage'
+import pwaPage from './pwaPage'
 
 export const pageRegistry = {
-    storePage: StorePage
+    storePage: StorePage,
+    pwaPage: pwaPage
 }
