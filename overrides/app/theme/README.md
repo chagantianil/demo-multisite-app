@@ -160,19 +160,40 @@ The `overrides/app/ssr.js` file configures server-side rendering (SSR) for your 
 - **Express Server Setup**: Configures the Express server for SSR
 - **Security Headers**: Sets up CSP (Content Security Policy) and security headers
 - **CORS Configuration**: Handles cross-origin requests for SFRA integration
-- **Hybrid Proxy**: Configures routing between PWA Kit and SFCC (for development)
+- **Hybrid Proxy**: Configures routing between PWA Kit and SFCC (for **local development only**)
 - **SLAS Authentication**: Handles authentication callbacks and token validation
 - **Marketing Cloud Integration**: Email sending functionality for passwordless login and password reset
+
+#### API Proxy vs Hybrid Proxy
+
+**Important Distinction**: There are two different types of proxy configurations:
+
+1. **API Proxy Settings** (for Commerce API/OCAPI requests):
+   - Configured in `config/default.js` under `ssrParameters.proxyConfigs`
+   - Also configured in **Managed Runtime environment settings** for production
+   - Used for proxying API requests through `/mobify/proxy/` paths
+   - **You do NOT need to add these in `ssr.js`** - they're handled separately
+
+2. **Hybrid Proxy** (in `ssr.js`):
+   - **Only for local development** - routes page requests between PWA Kit and SFCC
+   - Should be `enabled: false` in production
+   - Production deployments should use eCDN rules instead
+   - This is completely separate from API proxy settings
+
+**If you've already configured API proxy settings in Managed Runtime, you do NOT need to add them in `ssr.js`.** The `proxyConfigs` in `config/default.js` are for local development and should match your Managed Runtime settings.
 
 #### Important SSR.js Updates
 
 When adding new sites or routes, you may need to update:
 
-1. **Hybrid Proxy Routing Rules**: Update `routingRules` array if you need to route new paths through PWA Kit
+1. **Hybrid Proxy Routing Rules**: Update `routingRules` array if you need to route new paths through PWA Kit (local development only)
 2. **CORS Allowed Origins**: Add new SFCC domains to the `allowedOrigins` array if needed
 3. **Content Security Policy**: Update CSP directives if new external resources are required
 
-**Note**: Changes to `ssr.js` require a server restart to take effect. Always test SSR functionality after making changes.
+**Note**: 
+- Changes to `ssr.js` require a server restart to take effect
+- Hybrid Proxy should remain disabled (`enabled: false`) for production deployments
+- API proxy settings are managed in `config/default.js` and Managed Runtime settings, not in `ssr.js`
 
 ## Best Practices
 
