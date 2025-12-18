@@ -166,16 +166,31 @@ const ComponentRenderer = memo(({component}) => {
         )
     }
 
+    // In preview mode, always wrap component in Box with preview attributes
+    // This ensures components can be selected/deleted even when they return null
+    if (isPreview) {
+        return (
+            <Box {...previewAttributes} data-component-id={id}>
+                <DynamicComponent
+                    data={data}
+                    regions={regions}
+                    renderRegions={renderRegions}
+                    id={id}
+                    typeId={typeId}
+                />
+            </Box>
+        )
+    }
+
+    // In non-preview mode, render component directly (may return null)
     return (
-        <Box {...previewAttributes}>
-            <DynamicComponent
-                data={data}
-                regions={regions}
-                renderRegions={renderRegions}
-                id={id}
-                typeId={typeId}
-            />
-        </Box>
+        <DynamicComponent
+            data={data}
+            regions={regions}
+            renderRegions={renderRegions}
+            id={id}
+            typeId={typeId}
+        />
     )
 })
 
