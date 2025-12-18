@@ -54,7 +54,11 @@ const ComponentRenderer = memo(({component}) => {
             'data-allow-select': 'true',
             'data-allow-move': 'true',
             'data-allow-delete': 'true',
-            'data-item-id': `component|${id}`
+            'data-item-id': `component|${id}`,
+            style: {
+                minWidth: '50px',
+                minHeight: '50px'
+            }
         }
     }, [isPreview, id, typeId])
 
