@@ -175,6 +175,8 @@ This PWA Kit app works with the **`app_pagedesigner_pwa`** cartridge in `storefr
 - Page type definitions matching this PWA Kit
 - Proxy controller for fetching PWA Kit HTML
 
+**SFRA Page Designer Cartridge Repository:** [https://github.com/chagantianil/sfra-pd](https://github.com/chagantianil/sfra-pd)
+
 ---
 
 ## Getting Started
