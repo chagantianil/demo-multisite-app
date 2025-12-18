@@ -334,9 +334,20 @@ const {handler} = runtime.createHandler(options, (app) => {
     app.use(express.json()) // To parse JSON payloads
     app.use(express.urlencoded({extended: true}))
 
-    // Enable CORS for partner site AJAX requests (must be before defaultPwaKitSecurityHeaders)
+    // Enable CORS for SFRA requests (only when origin matches SFRA domains)
+    // Note: This is safe for non-preview mode because:
+    // - If no origin header (normal requests), CORS headers are not set
+    // - If origin doesn't match SFRA domains, CORS headers are not set
+    // - Only when origin matches SFRA domains does it set CORS headers
+    // Since we use server-side <isinclude>, CORS isn't strictly needed but harmless
     app.use((req, res, next) => {
         const origin = req.headers.origin
+
+        // Only process CORS if there's an origin header (indicates cross-origin request)
+        if (!origin) {
+            return next()
+        }
+
         const allowedOrigins = [
             'https://zzap-249.dx.commercecloud.salesforce.com',
             'https://*.commercecloud.salesforce.com',
@@ -345,7 +356,6 @@ const {handler} = runtime.createHandler(options, (app) => {
 
         // Check if origin matches allowed patterns
         const isAllowed = allowedOrigins.some((allowedOrigin) => {
-            if (!origin) return false
             if (allowedOrigin.includes('*')) {
                 // Convert wildcard pattern to regex
                 // e.g., https://*.commercecloud.salesforce.com -> https://.*\.commercecloud\.salesforce\.com
@@ -358,6 +368,7 @@ const {handler} = runtime.createHandler(options, (app) => {
             return origin === allowedOrigin
         })
 
+        // Only set CORS headers if origin matches SFRA domains
         if (isAllowed) {
             res.setHeader('Access-Control-Allow-Origin', origin)
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD')
@@ -370,8 +381,8 @@ const {handler} = runtime.createHandler(options, (app) => {
             res.setHeader('Access-Control-Max-Age', '86400') // 24 hours
         }
 
-        // Handle preflight requests
-        if (req.method === 'OPTIONS') {
+        // Handle preflight requests (OPTIONS)
+        if (req.method === 'OPTIONS' && isAllowed) {
             return res.status(200).end()
         }
 
