@@ -30,7 +30,7 @@ const ComponentRenderer = memo(({component}) => {
 
     const {typeId, data = {}, regions = [], id} = component
 
-    // Build Page Designer attributes for preview mode
+    // Build Page Designer attributes for preview mode (success case)
     const previewAttributes = useMemo(() => {
         if (!isPreview) return {}
 
@@ -59,6 +59,38 @@ const ComponentRenderer = memo(({component}) => {
         }
     }, [isPreview, id, typeId])
 
+    // Build Page Designer attributes for error scenarios
+    const buildErrorPreviewAttributes = useCallback(
+        (errorMessage, errorType = 'ERROR') => {
+            if (!isPreview || !id) return {}
+
+            return {
+                className: 'experience-component experience-error',
+                'data-sfcc-pd-component-info': JSON.stringify({
+                    id: id,
+                    render_state: errorType,
+                    render_info: {
+                        render_script_time: 0,
+                        render_time: 0,
+                        cache_expire_time: null
+                    },
+                    exception: {
+                        message: errorMessage,
+                        type: errorType
+                    },
+                    type: typeId || 'unknown',
+                    name: null,
+                    localized: true
+                }),
+                'data-allow-select': 'true',
+                'data-allow-move': 'true',
+                'data-allow-delete': 'true',
+                'data-item-id': `component|${id}`
+            }
+        },
+        [isPreview, id, typeId]
+    )
+
     // Memoized renderRegions function
     const renderRegions = useCallback((nestedRegions) => {
         return nestedRegions.map((region, index) => (
@@ -67,8 +99,15 @@ const ComponentRenderer = memo(({component}) => {
     }, [])
 
     if (!typeId) {
+        const errorAttributes = buildErrorPreviewAttributes('Component missing typeId', 'WARNING')
         return (
-            <Alert status="warning" size="sm" variant="left-accent" my={2}>
+            <Alert
+                status="warning"
+                size="sm"
+                variant="left-accent"
+                my={2}
+                {...errorAttributes}
+            >
                 <AlertIcon />
                 <AlertDescription>Component missing typeId</AlertDescription>
             </Alert>
@@ -79,8 +118,18 @@ const ComponentRenderer = memo(({component}) => {
     const [folder, componentName] = typeId.split('.')
 
     if (!folder || !componentName) {
+        const errorAttributes = buildErrorPreviewAttributes(
+            `Invalid typeId format: ${typeId}. Expected format: folder.componentName`,
+            'ERROR'
+        )
         return (
-            <Alert status="error" size="sm" variant="left-accent" my={2}>
+            <Alert
+                status="error"
+                size="sm"
+                variant="left-accent"
+                my={2}
+                {...errorAttributes}
+            >
                 <AlertIcon />
                 <AlertDescription>
                     Invalid typeId format: <code>{typeId}</code>
@@ -95,8 +144,18 @@ const ComponentRenderer = memo(({component}) => {
     const DynamicComponent = componentRegistry[typeId]
 
     if (!DynamicComponent) {
+        const errorAttributes = buildErrorPreviewAttributes(
+            `Component missing in experience/components/${folder}/${componentName}. Please create the component and register it in the component registry.`,
+            'ERROR'
+        )
         return (
-            <Alert status="error" variant="left-accent" borderRadius="md" my={2}>
+            <Alert
+                status="error"
+                variant="left-accent"
+                borderRadius="md"
+                my={2}
+                {...errorAttributes}
+            >
                 <AlertIcon />
                 <Box>
                     <AlertTitle>Component Missing</AlertTitle>
