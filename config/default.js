@@ -10,7 +10,7 @@ const {parseSettings} = require('./utils.js')
 
 module.exports = {
     app: {
-        enableHybrid: false,
+        enableHybrid: true,
         // Enable the store locator and shop the store feature.
         storeLocatorEnabled: true,
         // Enable the multi-ship feature.

@@ -70,7 +70,7 @@ const options = {
     // HYBRID PROXY REQUIREMENT:
     // - Hybrid Proxy requires this to be 'true' for SFCC session management to work properly
     // - Only enable Hybrid Proxy in development environments, never in production
-    localAllowCookies: false,
+    localAllowCookies: true,
 
     // Hybrid Proxy configuration for local development and MRT to ODS connection testing.
     //

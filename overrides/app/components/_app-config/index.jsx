@@ -108,7 +108,7 @@ const AppConfig = ({children, locals = {}}) => {
             refreshTokenGuestCookieTTL={43200}
             refreshTokenRegisteredCookieTTL={43200}
             // Uncomment 'hybridAuthEnabled' if the current site has Hybrid Auth enabled. Do NOT set this flag for hybrid storefronts using Plugin SLAS.
-            // hybridAuthEnabled={true}
+            hybridAuthEnabled={true}
         >
             <MultiSiteProvider site={locals.site} locale={locals.locale} buildUrl={locals.buildUrl}>
                 <StoreLocatorProvider config={storeLocatorConfig}>
