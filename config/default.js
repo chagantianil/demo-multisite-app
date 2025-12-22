@@ -10,6 +10,7 @@ const {parseSettings} = require('./utils.js')
 
 module.exports = {
     app: {
+        enableHybrid: false,
         // Enable the store locator and shop the store feature.
         storeLocatorEnabled: true,
         // Enable the multi-ship feature.
@@ -37,7 +38,7 @@ module.exports = {
             // Determine where the siteRef is located. Valid values include 'path|query_param|none'. Defaults to: 'none'
             site: 'path',
             // Determine where the localeRef is located. Valid values include 'path|query_param|none'. Defaults to: 'none'
-            locale: 'path',
+            locale: 'query_param',
             // This boolean value dictates whether or not default site or locale values are shown in the url. Defaults to: false
             showDefaults: true,
             // This boolean value dictates whether the plus sign (+) is interpreted as space for query param string. Defaults to: false
@@ -87,7 +88,7 @@ module.exports = {
         commerceAPI: {
             proxyPath: '/mobify/proxy/api',
             parameters: {
-                clientId: 'b7b5e7a3-8778-408b-95d7-62d82f23d428',
+                clientId: 'efe7e72f-31ac-4ab1-9d0d-afb6608a6c26',
                 organizationId: 'f_ecom_zzap_249',
                 shortCode: 'kv7kzm78',
                 siteId: 'RefArch'
@@ -142,6 +143,10 @@ module.exports = {
             {
                 host: 'zzap-249.dx.commercecloud.salesforce.com',
                 path: 'ocapi'
+            },
+            {
+                host: 'zzap-249.dx.commercecloud.salesforce.com',
+                path: 'dwrestatic'
             }
         ]
     }
