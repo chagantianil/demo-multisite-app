@@ -40,7 +40,7 @@ module.exports = {
             // Determine where the localeRef is located. Valid values include 'path|query_param|none'. Defaults to: 'none'
             locale: 'query_param',
             // This boolean value dictates whether or not default site or locale values are shown in the url. Defaults to: false
-            showDefaults: true,
+            showDefaults: false,
             // This boolean value dictates whether the plus sign (+) is interpreted as space for query param string. Defaults to: false
             interpretPlusSignAsSpace: false
         },
@@ -80,7 +80,8 @@ module.exports = {
         // Provide aliases for your sites. These will be used in place of your site id when generating paths throughout the application.
         siteAliases: {
             RefArch: 'refarch',
-            'my-store': 'mystore'
+            'my-store': 'mystore',
+            SiteGenesis: 'sitegenesis'
         },
         // The sites for your app, which is imported from sites.js
         sites,

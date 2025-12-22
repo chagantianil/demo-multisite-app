@@ -40,5 +40,19 @@ module.exports = [
                 }
             ]
         }
+    },
+    {
+        id: 'SiteGenesis',
+        l10n: {
+            supportedCurrencies: ['USD'],
+            defaultCurrency: 'USD',
+            defaultLocale: 'en-US',
+            supportedLocales: [
+                {
+                    id: 'en-US',
+                    preferredCurrency: 'USD'
+                }
+            ]
+        }
     }
 ]
