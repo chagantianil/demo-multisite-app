@@ -103,6 +103,10 @@ const AppConfig = ({children, locals = {}}) => {
             // Make sure to also enable useSLASPrivateClient in ssr.js when enabling this setting.
             enablePWAKitPrivateClient={true}
             privateClientProxyEndpoint={slasPrivateClientProxyEndpoint}
+            // Refresh token cookie TTL overrides (in seconds)
+            // 43200 seconds = 12 hours
+            refreshTokenGuestCookieTTL={43200}
+            refreshTokenRegisteredCookieTTL={43200}
             // Uncomment 'hybridAuthEnabled' if the current site has Hybrid Auth enabled. Do NOT set this flag for hybrid storefronts using Plugin SLAS.
             // hybridAuthEnabled={true}
         >
