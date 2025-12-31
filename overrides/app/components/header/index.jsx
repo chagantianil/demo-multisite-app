@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: BSD-3-Clause
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import React, {useRef, useState} from 'react'
+import React from 'react'
+// Original imports (commented - popover functionality):
+// import React, {useRef, useState} from 'react'
 import PropTypes from 'prop-types'
 import {useIntl} from 'react-intl'
 import {
@@ -12,48 +14,53 @@ import {
     Box,
     Flex,
     IconButton,
-    Badge,
-    Button,
-    Popover,
-    PopoverHeader,
-    PopoverTrigger,
-    PopoverContent,
-    PopoverBody,
-    PopoverFooter,
-    PopoverArrow,
-    Stack,
-    Text,
-    Divider,
-    useDisclosure,
-    useMediaQuery
+    Badge
+    // Original imports (commented - popover functionality):
+    // Button,
+    // Popover,
+    // PopoverHeader,
+    // PopoverTrigger,
+    // PopoverContent,
+    // PopoverBody,
+    // PopoverFooter,
+    // PopoverArrow,
+    // Stack,
+    // Text,
+    // Divider,
+    // useDisclosure,
+    // useMediaQuery
 } from '@salesforce/retail-react-app/app/components/shared/ui'
-import {AuthHelpers, useAuthHelper, useCustomerType} from '@salesforce/commerce-sdk-react'
+// Original imports (commented - popover functionality):
+// import {AuthHelpers, useAuthHelper, useCustomerType} from '@salesforce/commerce-sdk-react'
 
 import {useCurrentBasket} from '@salesforce/retail-react-app/app/hooks/use-current-basket'
-
 import Link from '@salesforce/retail-react-app/app/components/link'
 import Search from '@salesforce/retail-react-app/app/components/search'
-// Import from overridden with-registration (for c_marketingConsent support)
-import withRegistration from '../with-registration'
+// Original imports (commented - popover functionality):
+// import withRegistration from '../with-registration'
 import {
     AccountIcon,
     BrandLogo,
     BasketIcon,
     HamburgerIcon,
-    ChevronDownIcon,
     HeartIcon,
-    SignoutIcon,
     StoreIcon
+    // Original imports (commented - popover functionality):
+    // ChevronDownIcon,
+    // SignoutIcon
 } from '@salesforce/retail-react-app/app/components/icons'
-
-import {navLinks, messages} from '@salesforce/retail-react-app/app/pages/account/constant'
-import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
-import LoadingSpinner from '@salesforce/retail-react-app/app/components/loading-spinner'
+// Original imports (commented - popover functionality):
+// import {navLinks, messages} from '@salesforce/retail-react-app/app/pages/account/constant'
+// import useNavigation from '@salesforce/retail-react-app/app/hooks/use-navigation'
+// import LoadingSpinner from '@salesforce/retail-react-app/app/components/loading-spinner'
 import {HideOnDesktop, HideOnMobile} from '@salesforce/retail-react-app/app/components/responsive'
-import {isHydrated, noop} from '@salesforce/retail-react-app/app/utils/utils'
+import {noop} from '@salesforce/retail-react-app/app/utils/utils'
+// Original imports (commented - popover functionality):
+// import {isHydrated} from '@salesforce/retail-react-app/app/utils/utils'
 import {STORE_LOCATOR_IS_ENABLED} from '@salesforce/retail-react-app/app/constants'
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
-const IconButtonWithRegistration = withRegistration(IconButton)
+// Original (commented - popover functionality):
+// const IconButtonWithRegistration = withRegistration(IconButton)
 
 /**
  * Search bar for the header.
@@ -111,57 +118,56 @@ const Header = ({
     ...props
 }) => {
     const intl = useIntl()
-    const popoverTriggerRef = useRef(null)
+    // Original code (commented - popover functionality):
+    // const popoverTriggerRef = useRef(null)
     const {
         derivedData: {totalItems},
         data: basket
     } = useCurrentBasket()
-    const {isRegistered} = useCustomerType()
-    const logout = useAuthHelper(AuthHelpers.Logout)
-    const navigate = useNavigation()
+    // Original code (commented - popover functionality):
+    // const {isRegistered} = useCustomerType()
+    // const logout = useAuthHelper(AuthHelpers.Logout)
+    // const navigate = useNavigation()
     const storeLocatorEnabled = getConfig()?.app?.storeLocatorEnabled ?? STORE_LOCATOR_IS_ENABLED
-    const {
-        getButtonProps: getAccountMenuButtonProps,
-        getDisclosureProps: getAccountMenuDisclosureProps,
-        isOpen: isAccountMenuOpen,
-        onClose: onAccountMenuClose,
-        onOpen: onAccountMenuOpen
-    } = useDisclosure()
-    const [isDesktop] = useMediaQuery('(min-width: 992px)')
-
-    const [showLoading, setShowLoading] = useState(false)
-    // tracking if users enter the popover Content,
-    // so we can decide whether to close the menu when users leave account icons
-    const hasEnterPopoverContent = useRef()
+    // Original code (commented - popover functionality):
+    // const {
+    //     getButtonProps: getAccountMenuButtonProps,
+    //     getDisclosureProps: getAccountMenuDisclosureProps,
+    //     isOpen: isAccountMenuOpen,
+    //     onClose: onAccountMenuClose,
+    //     onOpen: onAccountMenuOpen
+    // } = useDisclosure()
+    // const [isDesktop] = useMediaQuery('(min-width: 992px)')
+    // const [showLoading, setShowLoading] = useState(false)
+    // const hasEnterPopoverContent = useRef()
 
     const styles = useMultiStyleConfig('Header')
 
-    const onSignoutClick = async () => {
-        setShowLoading(true)
-        await logout.mutateAsync()
-        navigate('/login')
-        setShowLoading(false)
-    }
-
-    const handleIconsMouseLeave = () => {
-        // don't close the menu if users enter the popover content
-        setTimeout(() => {
-            if (!hasEnterPopoverContent.current) onAccountMenuClose()
-        }, 100)
-    }
-
-    const handleKeyDown = (event) => {
-        if (event.key === 'Tab' && event.shiftKey && isAccountMenuOpen) {
-            // Prevent default behavior to keep focus on the popup trigger
-            event.preventDefault()
-            popoverTriggerRef.current.focus()
-        }
-    }
+    // Original handlers (commented - popover functionality):
+    // const onSignoutClick = async () => {
+    //     setShowLoading(true)
+    //     await logout.mutateAsync()
+    //     navigate('/login')
+    //     setShowLoading(false)
+    // }
+    // const handleIconsMouseLeave = () => {
+    //     setTimeout(() => {
+    //         if (!hasEnterPopoverContent.current) onAccountMenuClose()
+    //     }, 100)
+    // }
+    // const handleKeyDown = (event) => {
+    //     if (event.key === 'Tab' && event.shiftKey && isAccountMenuOpen) {
+    //         event.preventDefault()
+    //         popoverTriggerRef.current.focus()
+    //     }
+    // }
 
     return (
         <Box as="header" role="banner" {...styles.container} {...props}>
             <Box {...styles.content}>
+                {/* Original code (commented - popover functionality):
                 {showLoading && <LoadingSpinner wrapperStyles={{height: '100vh'}} />}
+                */}
                 <Flex wrap="wrap" alignItems={['baseline', 'baseline', 'baseline', 'center']}>
                     <IconButton
                         aria-label={intl.formatMessage({
@@ -192,6 +198,23 @@ const Header = ({
                     <HideOnMobile>
                         <SearchBar />
                     </HideOnMobile>
+                    {/* Account icon with direct navigation (NEW - direct Link navigation) */}
+                    <IconButton
+                        as={Link}
+                        to="/account"
+                        useNavLink={true}
+                        icon={<AccountIcon />}
+                        aria-label={intl.formatMessage({
+                            id: 'header.button.assistive_msg.my_account',
+                            defaultMessage: 'My Account'
+                        })}
+                        variant="unstyled"
+                        {...styles.icons}
+                        {...styles.accountIcon}
+                        display="flex"
+                    />
+
+                    {/* Original implementation (commented - popover functionality from main branch):
                     <IconButtonWithRegistration
                         icon={<AccountIcon />}
                         aria-label={intl.formatMessage({
@@ -303,6 +326,23 @@ const Header = ({
                             </PopoverContent>
                         </Popover>
                     )}
+                    */}
+                    {/* Wishlist icon with direct navigation (NEW - direct Link navigation) */}
+                    <IconButton
+                        as={Link}
+                        to="/wishlist"
+                        useNavLink={true}
+                        aria-label={intl.formatMessage({
+                            defaultMessage: 'Wishlist',
+                            id: 'header.button.assistive_msg.wishlist'
+                        })}
+                        icon={<HeartIcon />}
+                        variant="unstyled"
+                        {...styles.icons}
+                        {...styles.wishlistIcon}
+                        display="flex"
+                    />
+                    {/* Original implementation (commented - from main branch):
                     <IconButtonWithRegistration
                         aria-label={intl.formatMessage({
                             defaultMessage: 'Wishlist',
@@ -314,17 +354,36 @@ const Header = ({
                         {...styles.wishlistIcon}
                         onClick={onWishlistClick}
                     />
+                    */}
                     {storeLocatorEnabled && (
-                        <IconButton
-                            aria-label={intl.formatMessage({
-                                defaultMessage: 'Store Locator',
-                                id: 'header.button.assistive_msg.store_locator'
-                            })}
-                            icon={<StoreIcon />}
-                            {...styles.icons}
-                            variant="unstyled"
-                            onClick={onStoreLocatorClick}
-                        />
+                        <>
+                            {/* Store locator icon with direct navigation (NEW - direct Link navigation) */}
+                            <IconButton
+                                as={Link}
+                                to="/stores"
+                                useNavLink={true}
+                                aria-label={intl.formatMessage({
+                                    defaultMessage: 'Store Locator',
+                                    id: 'header.button.assistive_msg.store_locator'
+                                })}
+                                icon={<StoreIcon />}
+                                {...styles.icons}
+                                variant="unstyled"
+                                display="flex"
+                            />
+                            {/* Original implementation (commented - from main branch):
+                            <IconButton
+                                aria-label={intl.formatMessage({
+                                    defaultMessage: 'Store Locator',
+                                    id: 'header.button.assistive_msg.store_locator'
+                                })}
+                                icon={<StoreIcon />}
+                                {...styles.icons}
+                                variant="unstyled"
+                                onClick={onStoreLocatorClick}
+                            />
+                            */}
+                        </>
                     )}
                     <IconButton
                         aria-label={intl.formatMessage(

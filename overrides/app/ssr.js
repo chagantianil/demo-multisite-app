@@ -85,7 +85,7 @@ const options = {
         // If this is enabled, the Hybrid Proxy will be enabled to proxy requests to the SFCC instance.
         // IMPORTANT: This should only be used for local development. For production, this should be disabled and use eCDN to direct requests to the SFCC instance.
         // Refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/hybrid-authentication.html for more details.
-        enabled: false,
+        enabled: true,
 
         // The origin of the SFCC instance (i.e. the instance that is being proxied to which hosts the storefront).
         sfccOrigin: 'https://zzap-249.dx.commercecloud.salesforce.com',

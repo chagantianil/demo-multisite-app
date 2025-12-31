@@ -65,6 +65,8 @@ const routes = [
 
 // Remove SFRA/SiteGenesis routes from PWA Kit
 const ecomRoutes = [
+    '/',
+    '/home',
     '/login',
     '/registration',
     '/reset-password',
@@ -101,7 +103,7 @@ const hybridRoutes = [
                         newURL.searchParams.append('redirected', '1')
                         newURL.pathname = `/s/${siteId}/${window.location.pathname
                             .split('/')
-                            .slice(2)
+                            .slice(1)
                             .join('/')}`
                         window.location.replace(newURL)
                     }
