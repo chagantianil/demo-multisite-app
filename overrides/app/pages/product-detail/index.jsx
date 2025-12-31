@@ -38,7 +38,7 @@ import {STORE_LOCATOR_IS_ENABLED} from '@salesforce/retail-react-app/app/constan
 import {getConfig} from '@salesforce/pwa-kit-runtime/utils/ssr-config'
 // Project Components
 import RecommendedProducts from '@salesforce/retail-react-app/app/components/recommended-products'
-import ProductView from '@salesforce/retail-react-app/app/components/product-view'
+import ProductView from '../../components/product-view'
 import InformationAccordion from '@salesforce/retail-react-app/app/pages/product-detail/partials/information-accordion'
 import Island from '@salesforce/retail-react-app/app/components/island'
 
