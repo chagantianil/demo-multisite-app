@@ -16,15 +16,12 @@ import {Swiper, SwiperSlide} from 'swiper/react'
 import {Navigation, Thumbs, FreeMode, Pagination} from 'swiper/modules'
 import {Box, Flex, Image, useBreakpointValue} from '@chakra-ui/react'
 
-// Constants
 const ZOOM_SCALE = 2.5
-const ZOOM_SCALE_PERCENT = 250
 const DEFAULT_PAN_POSITION = {x: 50, y: 50}
 const INITIAL_PAN_POSITION = {x: 0, y: 0}
 const TOUCH_PAN_THRESHOLD = 1
 const STYLE_ID = 'product-image-gallery-styles'
 
-// Swiper CSS styles (injected client-side only for SSR compatibility)
 const SWIPER_STYLES = `
 .swiper {
     margin-left: auto;
@@ -155,10 +152,6 @@ const SWIPER_STYLES = `
 }
 `
 
-/**
- * Injects Swiper CSS styles into the document head (client-side only)
- * SSR-safe: Only runs on client, skips on server
- */
 const injectSwiperStyles = () => {
     if (typeof window === 'undefined') return
 
@@ -170,7 +163,6 @@ const injectSwiperStyles = () => {
     document.head.appendChild(style)
 }
 
-// Breakpoint configuration
 const BREAKPOINT_CONFIG = {
     showDots: {base: true, md: true, lg: false},
     flexDirection: {base: 'column', md: 'row'},
@@ -191,15 +183,107 @@ const calculatePercentage = (pixel, containerSize) => {
 }
 
 /**
- * Calculates scroll position to center clicked area when zoomed
- * @param {number} clickPosition - Click position in pixels
- * @param {number} containerSize - Container size in pixels
- * @returns {number} Scroll position in pixels
+ * Calculates actual rendered image dimensions with objectFit="contain"
+ * @param {number} containerWidth - Container width
+ * @param {number} containerHeight - Container height
+ * @param {number} naturalWidth - Image natural width
+ * @param {number} naturalHeight - Image natural height
+ * @returns {Object} {width, height} - Actual rendered dimensions
  */
-const calculateScrollPosition = (clickPosition, containerSize) => {
-    return clickPosition * ZOOM_SCALE - containerSize / 2
+const calculateRenderedImageSize = (
+    containerWidth,
+    containerHeight,
+    naturalWidth,
+    naturalHeight
+) => {
+    if (!containerWidth || !containerHeight || containerWidth <= 0 || containerHeight <= 0) {
+        return {width: 0, height: 0}
+    }
+
+    if (!naturalWidth || !naturalHeight || naturalWidth <= 0 || naturalHeight <= 0) {
+        return {width: containerWidth, height: containerHeight}
+    }
+
+    if (containerHeight === 0 || naturalHeight === 0) {
+        return {width: containerWidth, height: containerHeight}
+    }
+
+    const containerAspect = containerWidth / containerHeight
+    const imageAspect = naturalWidth / naturalHeight
+
+    if (!isFinite(imageAspect) || !isFinite(containerAspect)) {
+        return {width: containerWidth, height: containerHeight}
+    }
+
+    let renderedWidth, renderedHeight
+
+    if (imageAspect > containerAspect) {
+        renderedWidth = containerWidth
+        renderedHeight = containerWidth / imageAspect
+    } else {
+        renderedHeight = containerHeight
+        renderedWidth = containerHeight * imageAspect
+    }
+
+    if (
+        !isFinite(renderedWidth) ||
+        !isFinite(renderedHeight) ||
+        renderedWidth <= 0 ||
+        renderedHeight <= 0
+    ) {
+        return {width: containerWidth, height: containerHeight}
+    }
+
+    return {width: renderedWidth, height: renderedHeight}
 }
 
+/**
+ * Calculates maximum translate offset to prevent image edges from crossing container boundaries
+ * Transform: scale(scaleFactor) translate(x, y) with transformOrigin: center center
+ * Translate is in original coordinate space, so we need to divide by scale factor
+ * @param {number} scaledSize - Scaled image size (renderedSize * scale)
+ * @param {number} containerSize - Container size
+ * @param {number} scaleFactor - Scale factor (e.g., 2.5)
+ * @returns {number} Maximum translate offset in original coordinate space
+ */
+const calculateMaxTranslateOffset = (scaledSize, containerSize, scaleFactor) => {
+    if (!scaledSize || !containerSize || !scaleFactor || scaleFactor <= 0) {
+        return 0
+    }
+
+    if (scaledSize <= containerSize) {
+        return 0
+    }
+
+    const extension = (scaledSize - containerSize) / 2
+    const maxOffset = extension / scaleFactor
+
+    return Math.max(0, isFinite(maxOffset) ? maxOffset : 0)
+}
+
+/**
+ * Calculates initial translate offset to center a clicked point
+ * Transform: scale(scaleFactor) translate(x, y) with transformOrigin: center center
+ * @param {number} clickPosition - Click position relative to container
+ * @param {number} centerPosition - Container center position
+ * @param {number} scaleFactor - Scale factor (e.g., 2.5)
+ * @returns {number} Initial translate offset in original coordinate space
+ */
+const calculateInitialTranslateOffset = (clickPosition, centerPosition, scaleFactor) => {
+    if (
+        typeof clickPosition !== 'number' ||
+        typeof centerPosition !== 'number' ||
+        !scaleFactor ||
+        scaleFactor <= 0
+    ) {
+        return 0
+    }
+
+    const distanceFromCenter = centerPosition - clickPosition
+    const offset = (distanceFromCenter * (scaleFactor - 1)) / scaleFactor
+
+    return isFinite(offset) ? offset : 0
+}
 /**
  * Gets image URL from various image formats
  * @param {string|Object} image - Image URL string or object with image properties
@@ -211,10 +295,8 @@ const getImageUrl = (image) => {
 }
 
 const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
-    // Breakpoint values
     const showDots = useBreakpointValue(BREAKPOINT_CONFIG.showDots)
 
-    // State
     const [thumbsSwiper, setThumbsSwiper] = useState(null)
     const [isZoomed, setIsZoomed] = useState(false)
     const [isHovering, setIsHovering] = useState(false)
@@ -222,22 +304,18 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
     const [touchOffset, setTouchOffset] = useState(INITIAL_PAN_POSITION)
     const [activeSlideIndex, setActiveSlideIndex] = useState(0)
 
-    // Refs
     const mainSwiperRef = useRef(null)
     const imageContainerRef = useRef(null)
-    const imageBoxRef = useRef(null)
+    const imageRef = useRef(null)
     const currentPanPositionRef = useRef(DEFAULT_PAN_POSITION)
     const touchStartRef = useRef(null)
     const isPanningRef = useRef(false)
+    const imageDimensionsRef = useRef({width: 0, height: 0})
 
-    // Inject Swiper styles on mount (client-side only, SSR-safe)
     useEffect(() => {
         injectSwiperStyles()
     }, [])
 
-    /**
-     * Resets zoom state to initial values
-     */
     const resetZoom = useCallback(() => {
         setIsZoomed(false)
         setPanPosition(INITIAL_PAN_POSITION)
@@ -245,50 +323,83 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
         currentPanPositionRef.current = DEFAULT_PAN_POSITION
     }, [])
 
-    // Sync ref with panPosition state for immediate access
     useEffect(() => {
         if (isZoomed) {
             currentPanPositionRef.current = panPosition
         }
     }, [panPosition, isZoomed])
 
-    // Disable/enable Swiper touch when zoom state changes
     useEffect(() => {
         if (!mainSwiperRef.current?.swiper) return
 
-        const swiper = mainSwiperRef.current.swiper
-        if (isZoomed) {
-            // Disable touch/swipe for carousel when zoomed
-            // User can pan within zoomed image, but cannot swipe to next/prev image
-            swiper.allowTouchMove = false
-        } else {
-            swiper.allowTouchMove = true
-            swiper.allowSlideNext = true
-            swiper.allowSlidePrev = true
+        try {
+            const swiper = mainSwiperRef.current.swiper
+            if (isZoomed) {
+                swiper.allowTouchMove = false
+            } else {
+                swiper.allowTouchMove = true
+                swiper.allowSlideNext = true
+                swiper.allowSlidePrev = true
+            }
+        } catch (error) {
+            console.warn('Swiper not ready:', error)
         }
     }, [isZoomed])
 
-    // Reset zoom when slide changes (via Swiper events)
     useEffect(() => {
         if (!mainSwiperRef.current?.swiper || !isZoomed) return
 
-        const swiper = mainSwiperRef.current.swiper
-        const handleSlideChange = () => {
-            resetZoom()
-        }
+        try {
+            const swiper = mainSwiperRef.current.swiper
+            const handleSlideChange = () => {
+                resetZoom()
+            }
 
-        swiper.on('slideChange', handleSlideChange)
-        return () => {
-            swiper.off('slideChange', handleSlideChange)
+            swiper.on('slideChange', handleSlideChange)
+            return () => {
+                try {
+                    if (swiper && typeof swiper.off === 'function') {
+                        swiper.off('slideChange', handleSlideChange)
+                    }
+                } catch (error) {
+                    // Ignore cleanup errors
+                }
+            }
+        } catch (error) {
+            console.warn('Swiper not ready:', error)
         }
     }, [isZoomed, resetZoom])
 
-    // Reset zoom when images change
     useEffect(() => {
         resetZoom()
     }, [images, resetZoom])
 
-    // Close zoom on escape key
+    useEffect(() => {
+        if (showDots && thumbsSwiper) {
+            try {
+                if (
+                    thumbsSwiper &&
+                    typeof thumbsSwiper.destroyed !== 'undefined' &&
+                    !thumbsSwiper.destroyed
+                ) {
+                    // Swiper handles cleanup automatically
+                }
+            } catch (error) {
+                // Ignore cleanup errors
+            }
+        }
+    }, [showDots, thumbsSwiper])
+
+    useEffect(() => {
+        if (imageRef.current && imageRef.current.complete) {
+            const img = imageRef.current
+            imageDimensionsRef.current = {
+                width: img.naturalWidth,
+                height: img.naturalHeight
+            }
+        }
+    }, [activeSlideIndex])
+
     useEffect(() => {
         const handleEscape = (e) => {
             if (e.key === 'Escape' && isZoomed) {
@@ -300,60 +411,96 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
         return () => window.removeEventListener('keydown', handleEscape)
     }, [isZoomed, resetZoom])
 
-    /**
-     * Handles thumbnail hover/click - programmatically changes main image
-     */
     const handleThumbnailHover = useCallback(
         (index) => {
             if (!mainSwiperRef.current?.swiper) return
 
-            if (isZoomed) {
-                resetZoom()
+            try {
+                if (isZoomed) {
+                    resetZoom()
+                }
+                setActiveSlideIndex(index)
+                mainSwiperRef.current.swiper.slideTo(index)
+            } catch (error) {
+                console.warn('Swiper not ready:', error)
             }
-            setActiveSlideIndex(index)
-            mainSwiperRef.current.swiper.slideTo(index)
         },
         [isZoomed, resetZoom]
     )
 
-    /**
-     * Toggles zoom on main image click
-     * On desktop: calculates pan position based on click
-     * On mobile/tablet: sets scroll position to center clicked area
-     */
     const handleImageClick = useCallback(
         (e) => {
             if (!imageContainerRef.current) return
 
             if (!isZoomed) {
-                const container = imageContainerRef.current
-                const rect = container.getBoundingClientRect()
+                const imageContainerBox =
+                    e.currentTarget.closest('[data-image-container]') || imageContainerRef.current
+                if (!imageContainerBox) return
+
+                const rect = imageContainerBox.getBoundingClientRect()
                 const x = e.clientX - rect.left
                 const y = e.clientY - rect.top
 
-                // Calculate pan position based on click position
-                const xPercent = calculatePercentage(x, rect.width)
-                const yPercent = calculatePercentage(y, rect.height)
-                const initialPanPosition = {x: xPercent, y: yPercent}
+                if (showDots) {
+                    const containerRect = imageContainerBox.getBoundingClientRect()
+                    const clickX = e.clientX - containerRect.left
+                    const clickY = e.clientY - containerRect.top
+                    const centerX = containerRect.width / 2
+                    const centerY = containerRect.height / 2
 
-                // On mobile/tablet, set scroll position to center the clicked area
-                if (showDots && imageBoxRef.current) {
-                    const scrollLeft = calculateScrollPosition(x, rect.width)
-                    const scrollTop = calculateScrollPosition(y, rect.height)
+                    const imgDims = imageDimensionsRef.current
+                    let renderedSize
 
-                    // Use setTimeout to ensure the zoom state is set and DOM is updated
-                    setTimeout(() => {
-                        if (imageBoxRef.current) {
-                            imageBoxRef.current.scrollLeft = Math.max(0, scrollLeft)
-                            imageBoxRef.current.scrollTop = Math.max(0, scrollTop)
-                        }
-                    }, 0)
+                    if (imgDims.width && imgDims.height) {
+                        renderedSize = calculateRenderedImageSize(
+                            containerRect.width,
+                            containerRect.height,
+                            imgDims.width,
+                            imgDims.height
+                        )
+                    } else {
+                        renderedSize = {width: containerRect.width, height: containerRect.height}
+                    }
+
+                    const scaledWidth = renderedSize.width * ZOOM_SCALE
+                    const scaledHeight = renderedSize.height * ZOOM_SCALE
+
+                    const initialOffsetX = calculateInitialTranslateOffset(
+                        clickX,
+                        centerX,
+                        ZOOM_SCALE
+                    )
+                    const initialOffsetY = calculateInitialTranslateOffset(
+                        clickY,
+                        centerY,
+                        ZOOM_SCALE
+                    )
+
+                    const maxOffsetX = calculateMaxTranslateOffset(
+                        scaledWidth,
+                        containerRect.width,
+                        ZOOM_SCALE
+                    )
+                    const maxOffsetY = calculateMaxTranslateOffset(
+                        scaledHeight,
+                        containerRect.height,
+                        ZOOM_SCALE
+                    )
+
+                    setTouchOffset({
+                        x: Math.max(-maxOffsetX, Math.min(maxOffsetX, initialOffsetX)),
+                        y: Math.max(-maxOffsetY, Math.min(maxOffsetY, initialOffsetY))
+                    })
+                    setPanPosition(DEFAULT_PAN_POSITION)
+                } else {
+                    const xPercent = calculatePercentage(x, rect.width)
+                    const yPercent = calculatePercentage(y, rect.height)
+                    const initialPanPosition = {x: xPercent, y: yPercent}
+                    currentPanPositionRef.current = initialPanPosition
+                    setPanPosition(initialPanPosition)
+                    setTouchOffset(INITIAL_PAN_POSITION)
                 }
 
-                // Store in ref for immediate access and set state
-                currentPanPositionRef.current = initialPanPosition
-                setPanPosition(initialPanPosition)
-                setTouchOffset(INITIAL_PAN_POSITION)
                 setIsZoomed(true)
             } else {
                 resetZoom()
@@ -362,9 +509,6 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
         [isZoomed, showDots, resetZoom]
     )
 
-    /**
-     * Desktop: Handles mouse move for pan effect
-     */
     const handleMouseMove = useCallback(
         (e) => {
             if (!isZoomed || !imageContainerRef.current || showDots) return
@@ -374,32 +518,26 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
             const x = e.clientX - rect.left
             const y = e.clientY - rect.top
 
-            // Calculate percentage position (0-100)
             const xPercent = calculatePercentage(x, rect.width)
             const yPercent = calculatePercentage(y, rect.height)
 
-            // Set transform origin based on mouse position
             setPanPosition({x: xPercent, y: yPercent})
         },
         [isZoomed, showDots]
     )
 
-    /**
-     * Mobile/Tablet: Handles touch start
-     */
     const handleTouchStart = useCallback(
         (e) => {
             if (!isZoomed || !showDots) return
 
-            // Prevent Swiper from handling touch events
             e.stopPropagation()
             const touch = e.touches[0]
             if (touch) {
                 touchStartRef.current = {
                     x: touch.clientX,
                     y: touch.clientY,
-                    initialX: touch.clientX - touchOffset.x,
-                    initialY: touch.clientY - touchOffset.y
+                    initialOffsetX: touchOffset.x,
+                    initialOffsetY: touchOffset.y
                 }
                 isPanningRef.current = false
             }
@@ -407,72 +545,83 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
         [isZoomed, showDots, touchOffset]
     )
 
-    /**
-     * Mobile/Tablet: Handles touch move
-     * Allows native scrolling when zoomed on mobile/tablet
-     */
     const handleTouchMove = useCallback(
         (e) => {
             if (!isZoomed || !showDots || !touchStartRef.current) return
 
-            // Allow native scrolling when zoomed on mobile/tablet
-            // The container's overflow: scroll will handle the scrolling
-            if (isZoomed && showDots) {
-                return // Let native scroll handle it
-            }
-
             const touch = e.touches[0]
-            const deltaX = Math.abs(touch.clientX - touchStartRef.current.x)
-            const deltaY = Math.abs(touch.clientY - touchStartRef.current.y)
+            if (!touch) return
 
-            // Start panning immediately on any movement
+            const deltaX = touch.clientX - touchStartRef.current.x
+            const deltaY = touch.clientY - touchStartRef.current.y
+
             if (
                 !isPanningRef.current &&
-                (deltaX > TOUCH_PAN_THRESHOLD || deltaY > TOUCH_PAN_THRESHOLD)
+                (Math.abs(deltaX) > TOUCH_PAN_THRESHOLD || Math.abs(deltaY) > TOUCH_PAN_THRESHOLD)
             ) {
                 isPanningRef.current = true
             }
 
             if (isPanningRef.current) {
-                // Prevent Swiper from handling when panning
                 e.preventDefault()
                 e.stopPropagation()
 
-                const newX = touch.clientX - touchStartRef.current.initialX
-                const newY = touch.clientY - touchStartRef.current.initialY
+                const imageContainerBox = e.currentTarget.closest('[data-image-container]')
+                if (!imageContainerBox) return
 
-                // Calculate bounds to prevent panning beyond image edges
-                if (imageContainerRef.current) {
-                    const container = imageContainerRef.current
-                    const rect = container.getBoundingClientRect()
-                    const maxX = (rect.width * (ZOOM_SCALE - 1)) / 2
-                    const maxY = (rect.height * (ZOOM_SCALE - 1)) / 2
+                const containerRect = imageContainerBox.getBoundingClientRect()
 
-                    setTouchOffset({
-                        x: Math.max(-maxX, Math.min(maxX, newX)),
-                        y: Math.max(-maxY, Math.min(maxY, newY))
-                    })
+                const newX = touchStartRef.current.initialOffsetX + deltaX
+                const newY = touchStartRef.current.initialOffsetY + deltaY
+
+                const imgDims = imageDimensionsRef.current
+                let renderedSize
+
+                if (imgDims.width && imgDims.height) {
+                    renderedSize = calculateRenderedImageSize(
+                        containerRect.width,
+                        containerRect.height,
+                        imgDims.width,
+                        imgDims.height
+                    )
+                } else {
+                    renderedSize = {width: containerRect.width, height: containerRect.height}
                 }
+
+                const scaledWidth = renderedSize.width * ZOOM_SCALE
+                const scaledHeight = renderedSize.height * ZOOM_SCALE
+
+                const maxX = calculateMaxTranslateOffset(
+                    scaledWidth,
+                    containerRect.width,
+                    ZOOM_SCALE
+                )
+                const maxY = calculateMaxTranslateOffset(
+                    scaledHeight,
+                    containerRect.height,
+                    ZOOM_SCALE
+                )
+
+                setTouchOffset({
+                    x: Math.max(-maxX, Math.min(maxX, newX)),
+                    y: Math.max(-maxY, Math.min(maxY, newY))
+                })
             }
         },
         [isZoomed, showDots]
     )
 
-    /**
-     * Mobile/Tablet: Handles touch end
-     */
     const handleTouchEnd = useCallback(() => {
         if (!isZoomed || !showDots) return
         touchStartRef.current = null
         isPanningRef.current = false
     }, [isZoomed, showDots])
 
-    // Memoized values
     const hasImages = useMemo(() => images && images.length > 0, [images])
-    const swiperModules = useMemo(
-        () => (showDots ? [Navigation, Pagination] : [Navigation, Thumbs]),
-        [showDots]
-    )
+    const swiperModules = useMemo(() => {
+        const modules = showDots ? [Navigation, Pagination] : [Navigation, Thumbs]
+        return modules.filter(Boolean)
+    }, [showDots])
     const paginationConfig = useMemo(
         () =>
             showDots
@@ -486,29 +635,47 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                 : false,
         [showDots]
     )
-    const thumbsConfig = useMemo(
-        () =>
-            !showDots
-                ? {
-                      swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
-                      slideThumbActiveClass: 'swiper-slide-thumb-active'
-                  }
-                : undefined,
-        [showDots, thumbsSwiper]
-    )
+    const thumbsConfig = useMemo(() => {
+        if (showDots) return undefined
 
-    // Handlers
+        if (
+            !thumbsSwiper ||
+            (typeof thumbsSwiper.destroyed !== 'undefined' && thumbsSwiper.destroyed)
+        ) {
+            return {
+                swiper: null,
+                slideThumbActiveClass: 'swiper-slide-thumb-active'
+            }
+        }
+
+        return {
+            swiper: thumbsSwiper,
+            slideThumbActiveClass: 'swiper-slide-thumb-active'
+        }
+    }, [showDots, thumbsSwiper])
+
     const handleSlideChange = useCallback((swiper) => {
-        setActiveSlideIndex(swiper.activeIndex)
+        if (!swiper || typeof swiper.activeIndex === 'undefined') return
+        try {
+            setActiveSlideIndex(swiper.activeIndex)
+            imageDimensionsRef.current = {width: 0, height: 0}
+        } catch (error) {
+            console.warn('Error in handleSlideChange:', error)
+        }
     }, [])
 
     const handleSwiperInit = useCallback((swiper) => {
-        setActiveSlideIndex(swiper.activeIndex)
+        if (!swiper || typeof swiper.activeIndex === 'undefined') return
+        try {
+            setActiveSlideIndex(swiper.activeIndex)
+            imageDimensionsRef.current = {width: 0, height: 0}
+        } catch (error) {
+            console.warn('Error in handleSwiperInit:', error)
+        }
     }, [])
 
     const handleMouseDown = useCallback(
         (e) => {
-            // Prevent text selection when zoomed
             if (isZoomed) {
                 e.preventDefault()
             }
@@ -516,7 +683,6 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
         [isZoomed]
     )
 
-    // Early return if no images
     if (!hasImages) {
         return null
     }
@@ -531,7 +697,6 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
             align="flex-start"
             h="100%"
         >
-            {/* Thumbnails - Vertical on desktop only, hidden on tablet/mobile */}
             {!showDots && (
                 <Box
                     w={BREAKPOINT_CONFIG.thumbnailWidth}
@@ -541,7 +706,12 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                     overflow="hidden"
                 >
                     <Swiper
-                        onSwiper={setThumbsSwiper}
+                        key="thumbnail-swiper"
+                        onSwiper={(swiper) => {
+                            if (swiper && !swiper.destroyed) {
+                                setThumbsSwiper(swiper)
+                            }
+                        }}
                         spaceBetween={8}
                         slidesPerView={4}
                         direction="vertical"
@@ -596,7 +766,6 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                 </Box>
             )}
 
-            {/* Main Image Carousel */}
             <Box
                 flex="1"
                 position="relative"
@@ -613,9 +782,10 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                     width="100%"
                     pb="100%"
                     minH={BREAKPOINT_CONFIG.minHeight}
-                    overflow={isZoomed && showDots ? 'hidden' : 'visible'}
+                    overflow="hidden"
                 >
                     <Swiper
+                        key={`main-swiper-${showDots ? 'dots' : 'thumbs'}`}
                         ref={mainSwiperRef}
                         spaceBetween={10}
                         navigation={!isZoomed && !showDots}
@@ -640,13 +810,12 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                         {images.map((image, index) => (
                             <SwiperSlide key={index}>
                                 <Box
-                                    ref={index === 0 ? imageBoxRef : null}
                                     position="relative"
                                     width="100%"
                                     maxW="100%"
                                     height="100%"
                                     bg="gray.50"
-                                    overflow={isZoomed && showDots ? 'scroll' : 'hidden'}
+                                    overflow="hidden"
                                     cursor={isZoomed ? 'move' : isHovering ? 'zoom-in' : 'default'}
                                     onClick={(e) => {
                                         e.stopPropagation()
@@ -657,56 +826,45 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                                     onTouchMove={handleTouchMove}
                                     onTouchEnd={handleTouchEnd}
                                     style={{
-                                        touchAction: isZoomed && showDots ? 'pan-x pan-y' : 'auto',
+                                        touchAction: isZoomed && showDots ? 'none' : 'auto',
                                         WebkitTouchCallout: 'none',
-                                        WebkitUserSelect: 'none',
-                                        WebkitOverflowScrolling: 'touch'
+                                        WebkitUserSelect: 'none'
                                     }}
                                     userSelect="none"
                                     willChange={isZoomed ? 'transform' : 'auto'}
+                                    data-image-container
                                 >
-                                    {isZoomed && showDots ? (
-                                        <Box
-                                            position="absolute"
-                                            top="0"
-                                            left="0"
-                                            width={`${ZOOM_SCALE_PERCENT}%`}
-                                            height={`${ZOOM_SCALE_PERCENT}%`}
-                                            minH={`${ZOOM_SCALE_PERCENT}%`}
-                                        >
-                                            <Image
-                                                src={getImageUrl(image)}
-                                                alt={`${alt} ${index + 1}`}
-                                                position="absolute"
-                                                top="0"
-                                                left="0"
-                                                width="100%"
-                                                height="100%"
-                                                objectFit="contain"
-                                                loading={index === 0 ? 'eager' : 'lazy'}
-                                                decoding="sync"
-                                                pointerEvents="none"
-                                                sx={{
-                                                    backfaceVisibility: 'hidden',
-                                                    WebkitBackfaceVisibility: 'hidden'
-                                                }}
-                                            />
-                                        </Box>
-                                    ) : (
+                                    <Box
+                                        position="absolute"
+                                        top="0"
+                                        left="0"
+                                        width="100%"
+                                        height="100%"
+                                        overflow="hidden"
+                                    >
                                         <Image
+                                            ref={index === activeSlideIndex ? imageRef : null}
                                             src={getImageUrl(image)}
                                             alt={`${alt} ${index + 1}`}
-                                            position="absolute"
-                                            top="0"
-                                            left="0"
                                             width="100%"
                                             height="100%"
                                             objectFit="contain"
                                             loading={index === 0 ? 'eager' : 'lazy'}
                                             decoding="sync"
+                                            onLoad={(e) => {
+                                                if (index === activeSlideIndex && e.target) {
+                                                    const img = e.target
+                                                    imageDimensionsRef.current = {
+                                                        width: img.naturalWidth,
+                                                        height: img.naturalHeight
+                                                    }
+                                                }
+                                            }}
                                             transform={
                                                 isZoomed
-                                                    ? `scale(${ZOOM_SCALE}) translateZ(0)`
+                                                    ? showDots
+                                                        ? `scale(${ZOOM_SCALE}) translate(${touchOffset.x}px, ${touchOffset.y}px) translateZ(0)`
+                                                        : `scale(${ZOOM_SCALE}) translateZ(0)`
                                                     : 'scale(1) translateZ(0)'
                                             }
                                             transformOrigin={
@@ -720,17 +878,17 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                                             pointerEvents="none"
                                             sx={{
                                                 backfaceVisibility: 'hidden',
-                                                WebkitBackfaceVisibility: 'hidden'
+                                                WebkitBackfaceVisibility: 'hidden',
+                                                willChange: 'transform'
                                             }}
                                         />
-                                    )}
+                                    </Box>
                                 </Box>
                             </SwiperSlide>
                         ))}
                     </Swiper>
                 </Box>
 
-                {/* Pagination Dots - Show on tablet/mobile */}
                 {showDots && (
                     <Box
                         className="swiper-pagination-custom"
@@ -742,7 +900,6 @@ const ProductImageGallery = ({images = [], alt = 'Product image'}) => {
                     />
                 )}
 
-                {/* Zoom Indicator Text */}
                 {isZoomed && (
                     <Box
                         position="absolute"
