@@ -81,14 +81,19 @@ const options = {
     // - Production deployments should use eCDN to direct requests to SFCC instances
     //
     // REFERENCE: https://developer.salesforce.com/docs/commerce/commerce-api/guide/hybrid-authentication.html
+    // Hybrid Proxy Configuration
+    // Reads from config.hybridProxy if available (allows environment-specific overrides),
+    // otherwise falls back to default values for local development.
     hybridProxy: {
         // If this is enabled, the Hybrid Proxy will be enabled to proxy requests to the SFCC instance.
         // IMPORTANT: This should only be used for local development. For production, this should be disabled and use eCDN to direct requests to the SFCC instance.
         // Refer to https://developer.salesforce.com/docs/commerce/commerce-api/guide/hybrid-authentication.html for more details.
-        enabled: true,
+        enabled: config.hybridProxy?.enabled !== undefined ? config.hybridProxy.enabled : true,
 
         // The origin of the SFCC instance (i.e. the instance that is being proxied to which hosts the storefront).
-        sfccOrigin: 'https://zzap-249.dx.commercecloud.salesforce.com',
+        // Can be overridden in environment-specific configs if different origins are needed per environment.
+        sfccOrigin:
+            config.hybridProxy?.sfccOrigin || 'https://zzap-249.dx.commercecloud.salesforce.com',
 
         // The MRT rules to apply to the hybrid proxy.
         // These rules determine which requests are handled by PWA Kit (MRT) vs proxied to SFCC. The same rules should be used in the eCDN rules for the same requests.
@@ -102,10 +107,14 @@ const options = {
             // Configuration: site: 'none', locale: 'none' → URLs like /category/womens (no prefixes)
             // Logic: URLs matching these patterns → PWA Kit handles them
             //        URLs NOT matching → proxied to SFCC (e.g., /cart, /checkout)
-            // Site aliases and IDs: Include patterns for both site aliases (e.g., /sitegenesis) and
-            // original site IDs (e.g., /SiteGenesis) so PWA Kit handles them instead of proxying to SFCC
+            // Site aliases and IDs: Dynamically reads from config.app.siteAliases and config.app.sites
+            // to ensure environment-specific configs (production-sfra.js, production-sg.js) are respected.
+            // This ensures that only the site IDs/aliases for the current environment are included in routing rules.
             // Pattern matches: /sitegenesis, /SiteGenesis, /sitegenesis/, /SiteGenesis?locale=en-US, etc.
             (() => {
+                // Dynamically read site aliases and IDs from the current environment's config
+                // This ensures production-sfra.js only includes RefArch patterns,
+                // and production-sg.js only includes SiteGenesis patterns
                 const siteAliases = config.app.siteAliases || {}
                 const sites = config.app.sites || []
 
@@ -117,6 +126,7 @@ const options = {
 
                 // Get original site IDs (e.g., SiteGenesis, RefArch, my-store)
                 // Note: Site IDs are case-sensitive, matching routes.jsx case-sensitive check
+                // This dynamically adapts to the filtered sites array in environment configs
                 const siteIds = sites.map((site) => `/${site.id}`).join('|')
 
                 // Combine both aliases and IDs, removing duplicates

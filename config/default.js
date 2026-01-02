@@ -144,11 +144,9 @@ module.exports = {
             {
                 host: 'zzap-249.dx.commercecloud.salesforce.com',
                 path: 'ocapi'
-            },
-            {
-                host: 'zzap-249.dx.commercecloud.salesforce.com',
-                path: 'dwrestatic'
             }
+            // Note: dwrestatic is not included as it's only needed for proxying static assets
+            // from SFCC's traditional storefront, which is typically not required
         ]
     }
 }
