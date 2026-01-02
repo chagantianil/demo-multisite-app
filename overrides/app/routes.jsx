@@ -98,16 +98,81 @@ const hybridRoutes = [
 
             if (typeof window !== 'undefined') {
                 useEffect(() => {
-                    const newURL = new URL(window.location)
                     if (!urlParams.has('redirected')) {
-                        newURL.searchParams.append('redirected', '1')
-                        newURL.pathname = `/s/${siteId}/${window.location.pathname
-                            .split('/')
-                            .slice(1)
-                            .join('/')}`
-                        window.location.replace(newURL)
+                        // Preserve the current origin (localhost) when redirecting
+                        const currentOrigin = window.location.origin
+                        const pathParts = window.location.pathname.split('/').filter(Boolean)
+
+                        // Check if first segment is a site alias or site ID
+                        const siteAliases = config?.app?.siteAliases || {}
+                        const siteAliasValues = Object.values(siteAliases)
+                        const sites = config?.app?.sites || []
+                        const siteIds = sites.map((s) => s.id)
+
+                        const firstSegment = pathParts[0]
+                        const isSiteAlias = siteAliasValues.includes(firstSegment?.toLowerCase())
+                        const isSiteId = siteIds.includes(firstSegment)
+
+                        // If the path is just a site alias/ID (e.g., /sitegenesis, /RefArch)
+                        // redirect to SFCC format: /s/{siteId}
+                        if ((isSiteAlias || isSiteId) && pathParts.length === 1) {
+                            // Determine the site ID from alias or use the ID directly
+                            let targetSiteId = firstSegment
+                            if (isSiteAlias) {
+                                // Find the site ID for this alias
+                                targetSiteId =
+                                    Object.keys(siteAliases).find(
+                                        (key) =>
+                                            siteAliases[key].toLowerCase() ===
+                                            firstSegment.toLowerCase()
+                                    ) || siteId
+                            }
+
+                            // Redirect to SFCC format: /s/{siteId}
+                            const newPath = `/s/${targetSiteId}`
+                            const newURL = new URL(newPath, currentOrigin)
+
+                            // Preserve existing query params and add redirected flag
+                            urlParams.forEach((value, key) => {
+                                if (key !== 'redirected') {
+                                    newURL.searchParams.set(key, value)
+                                }
+                            })
+                            newURL.searchParams.set('redirected', '1')
+
+                            window.location.replace(newURL.href)
+                            return
+                        }
+
+                        // For other unmatched routes, redirect to SFCC format
+                        // Remove site/locale prefixes if present (slice(1) removes first segment if it's site)
+                        const pathAfterSite =
+                            isSiteAlias || isSiteId
+                                ? pathParts.slice(1).join('/')
+                                : pathParts.join('/')
+
+                        const newPath = `/s/${siteId}${pathAfterSite ? '/' + pathAfterSite : ''}`
+                        const newURL = new URL(newPath, currentOrigin)
+
+                        // Preserve existing query params and add redirected flag
+                        const existingParams = new URLSearchParams(window.location.search)
+                        existingParams.forEach((value, key) => {
+                            if (key !== 'redirected') {
+                                newURL.searchParams.set(key, value)
+                            }
+                        })
+                        newURL.searchParams.set('redirected', '1')
+                        // Use href to ensure absolute URL with origin is used
+                        // This prevents the hybrid proxy from changing the host
+                        window.location.replace(newURL.href)
                     }
-                }, [window.location.href])
+                }, [
+                    location.pathname,
+                    location.search,
+                    siteId,
+                    config?.app?.siteAliases,
+                    config?.app?.sites
+                ])
             }
 
             if (urlParams.has('redirected')) {

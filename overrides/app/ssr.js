@@ -102,7 +102,37 @@ const options = {
             // Configuration: site: 'none', locale: 'none' → URLs like /category/womens (no prefixes)
             // Logic: URLs matching these patterns → PWA Kit handles them
             //        URLs NOT matching → proxied to SFCC (e.g., /cart, /checkout)
-            'http.request.uri.path eq "/" or http.request.uri.path matches "^/callback" or http.request.uri.path matches "^/mobify" or http.request.uri.path matches "^/worker.js" or http.request.uri.path matches "^/login" or http.request.uri.path matches "^/reset-password" or http.request.uri.path matches "^/registration" or http.request.uri.path matches "^/account" or http.request.uri.path matches "^/account/orders" or http.request.uri.path matches "^/account/orders/(\\\\w+)" or http.request.uri.path matches "^/account/wishlist" or http.request.uri.path matches "^/product/(\\\\w+)" or http.request.uri.path matches "^/search" or http.request.uri.path matches "^/category/(\\\\w+)" or http.request.uri.path matches "^/store-locator" or http.request.uri.path matches "^/social-callback" or http.request.uri.path matches "^/passwordless-login-callback" or http.request.uri.path matches "^/passwordless-login-landing" or http.request.uri.path matches "^/reset-password-callback" or http.request.uri.path matches "^/reset-password-landing"'
+            // Site aliases and IDs: Include patterns for both site aliases (e.g., /sitegenesis) and
+            // original site IDs (e.g., /SiteGenesis) so PWA Kit handles them instead of proxying to SFCC
+            // Pattern matches: /sitegenesis, /SiteGenesis, /sitegenesis/, /SiteGenesis?locale=en-US, etc.
+            (() => {
+                const siteAliases = config.app.siteAliases || {}
+                const sites = config.app.sites || []
+
+                // Get site aliases (e.g., sitegenesis, refarch, mystore)
+                // Note: Aliases in config are lowercase, matching routes.jsx case-insensitive check
+                const siteAliasValues = Object.values(siteAliases)
+                    .map((alias) => `/${alias}`)
+                    .join('|')
+
+                // Get original site IDs (e.g., SiteGenesis, RefArch, my-store)
+                // Note: Site IDs are case-sensitive, matching routes.jsx case-sensitive check
+                const siteIds = sites.map((site) => `/${site.id}`).join('|')
+
+                // Combine both aliases and IDs, removing duplicates
+                const allSitePaths = [...new Set([siteAliasValues, siteIds].filter(Boolean))].join(
+                    '|'
+                )
+
+                const sitePattern = allSitePaths
+                    ? ` or http.request.uri.path matches "^(${allSitePaths})(/|$|\\\\?|/.*)"`
+                    : ''
+
+                return (
+                    'http.request.uri.path eq "/" or http.request.uri.path matches "^/callback" or http.request.uri.path matches "^/mobify" or http.request.uri.path matches "^/worker.js" or http.request.uri.path matches "^/login" or http.request.uri.path matches "^/reset-password" or http.request.uri.path matches "^/registration" or http.request.uri.path matches "^/account" or http.request.uri.path matches "^/account/orders" or http.request.uri.path matches "^/account/orders/(\\\\w+)" or http.request.uri.path matches "^/account/wishlist" or http.request.uri.path matches "^/product/(\\\\w+)" or http.request.uri.path matches "^/search" or http.request.uri.path matches "^/category/(\\\\w+)" or http.request.uri.path matches "^/store-locator" or http.request.uri.path matches "^/social-callback" or http.request.uri.path matches "^/passwordless-login-callback" or http.request.uri.path matches "^/passwordless-login-landing" or http.request.uri.path matches "^/reset-password-callback" or http.request.uri.path matches "^/reset-password-landing"' +
+                    sitePattern
+                )
+            })()
         ]
     }
 }
